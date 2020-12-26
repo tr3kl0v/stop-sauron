@@ -9,15 +9,13 @@ Unforunate you still need to have `sudo` rights, but when that's the case you ca
 3. McAfee 
 
 
-## USE AT OWN RISK
-
-
 ## Usage
-Make the script executable
+Use at your own risk, but now I'm using it quite often.
+Make the script executable:
 ```
 $ chmod +x ./stop-sauron.sh
 ```
-Run the script as sudo
+Run stop Sauron as sudo:
 ```
 $ sudo ./stop-sauron.sh
 ```
