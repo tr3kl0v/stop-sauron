@@ -189,7 +189,6 @@ if [[ $val == *"McAfee"* ]]; then
             /bin/launchctl $LOADER -w $MCAFEE_AGENT_PLIST
             /bin/launchctl $LOADER -w $MCAFEE_AGENT_MCAM_PLIST
             /bin/launchctl $LOADER -w $MCAFEE_AGENT_MACOMPAT_PLIST
-            #/bin/launchctl $LOADER -w $MCAFEE_AGENT_AGENTMONITOR_PLIST
             su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_AGENT_AGENTMONITOR_PLIST"
             /bin/launchctl $LOADER -w $MCAFEE_AGENT_SSM_PLIST
             /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANFACTORY_PLIST
@@ -215,7 +214,7 @@ if [[ $val == *"McAfee"* ]]; then
         /bin/launchctl $LOADER -w $MCAFEE_AGENT_PLIST
         /bin/launchctl $LOADER -w $MCAFEE_AGENT_MCAM_PLIST
         /bin/launchctl $LOADER -w $MCAFEE_AGENT_MACOMPAT_PLIST
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_AGENTMONITOR_PLIST
+        su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_AGENT_AGENTMONITOR_PLIST"
         /bin/launchctl $LOADER -w $MCAFEE_AGENT_SSM_PLIST
         /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANFACTORY_PLIST
         /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANMANAGER_PLIST
