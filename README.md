@@ -12,6 +12,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 ## Usage
 
 Use at your own risk, but know I'm using it quite often.
+
 Make the script executable:
 
 ```zsh
