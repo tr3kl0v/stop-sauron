@@ -10,7 +10,7 @@ Unforunate you still need to have `sudo` rights, but when that's the case you ca
 
 
 ## Usage
-Use at your own risk, but now I'm using it quite often.
+Use at your own risk, but know I'm using it quite often.
 Make the script executable:
 ```
 $ chmod +x ./stop-sauron.sh
