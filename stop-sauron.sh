@@ -2,50 +2,15 @@
 
 [[ $EUID == 0 ]] || { echo "Must be run as root."; exit; }
 
-# DEAMONS
-AIRWATCH_DAEMON_PLIST="/Library/LaunchDaemons/com.airwatch.airwatchd.plist" # root | AirWatch/hubd process | deamon | unloadable
-AIRWATCH_AWCM_PLIST="/Library/LaunchDaemons/com.airwatch.awcmd.plist" # root | AirWatch/awcmd process | deamon | unloadable
-FIRE_EYE_XAGT_PLIST="/Library/LaunchDaemons/com.fireeye.xagt.plist"  # root | xagt DEAMON | deamon | unloadable
-MCAFEE_AGENT_PLIST="/Library/LaunchDaemons/com.mcafee.agent.ma.plist" # root | McAfee/agent/bin/masvc | Program | unloadable
-MCAFEE_AGENT_MCAM_PLIST="/Library/LaunchDaemons/com.mcafee.agent.macmn.plist" # root | McAfee/agent/bin/macmnsv | Program | unloadable
-MCAFEE_AGENT_MACOMPAT_PLIST="/Library/LaunchDaemons/com.mcafee.agent.macompat.plist" # root | McAfee/agent/bin/macompatsvc | Program | unloadable
-MCAFEE_AGENT_AGENTMONITOR_PLIST="/Library/LaunchDaemons/com.mcafee.agentMonitor.helper.plist" # user | com.mcafee.agentMonitor.helper | service | unloadable
-MCAFEE_AGENT_SSM_PLIST="/Library/LaunchDaemons/com.mcafee.ssm.Eupdate.plist" # root | McAfee/AntiMalware/VShieldUpdate | Program | unloadable
-MCAFEE_AGENT_SCANFACTORY_PLIST="/Library/LaunchDaemons/com.mcafee.ssm.ScanFactory.plist" # root | McAfee/AntiMalware/VShieldScanner | Program | unloadable
-MCAFEE_AGENT_SCANMANAGER_PLIST="/Library/LaunchDaemons/com.mcafee.ssm.ScanManager.plist" # root | McAfee/AntiMalware/VShieldScanManager.app | Program | unloadable
-MCAFEE_AGENT_VIRUSSCAN_PLIST="/Library/LaunchDaemons/com.mcafee.virusscan.fmpd.plist" # root | McAfee/fmp/bin64/fmpd | Program | unloadable
-
-# AGENTS
-AIRWATCH_AGENT_PLIST="/Library/LaunchAgents/com.airwatch.mac.agent.plist" # user | IntelligentHubAgent.app | Program | unloadable
-FIRE_EYE_XAGTNOTIF_PLIST="/Library/LaunchAgents/com.fireeye.xagtnotif.plist" # user | FireEye/xagt/xagtnotif.app | Program | unloadable
-MCAFEE_MENULET_PLIST="/Library/LaunchAgents/com.mcafee.menulet.plist" # user | McAfee/MSS/Applications/Menulet.app | Program | not unloadable
-MCAFEE_REPORTER_PLIST="/Library/LaunchAgents/com.mcafee.reporter.plist" # user | McAfee Reporter.app | Program | not unloadable
-# MCAFEE_UNINSTALL_SYSTEMEXTENSTION_PLIST="/Library/LaunchAgents/com.mcafee.uninstall.SystemExtension.plist" # root | McAfee deactivatesystemextension | Program |  not unloadable
-
-# PROCESS
-AIRWATCH_PROCESS="airwatch" 
-FIRE_EYE_PROCESS="xagt"
-
-# Users
-LOCAL_USER=$USER
-SUDO_USER=$SUDO_USER
-
-WriteLog ()
-{
-	# /bin/echo `date`" "$1 >> $LOG
-	/bin/echo `date`" --- "$1
-}
-
-isNumber ()
-{
-    case $PROCESS in
-        ''|*[!0-9]*) false ;;
-        *) true ;;
-    esac 
-} 
+#------------------------#
+# imports
+#------------------------#
+. configuration.sh
+. shared.sh
 
 
 WriteLog "Hello '$SUDO_USER', as expected you're currently '$LOCAL_USER'!"
+
 #------------------------#
 # Options menu
 #------------------------#
@@ -55,14 +20,14 @@ select opt in "${options[@]}"
 do
     case $opt in
         "Disable Sauron's eye")
-            WriteLog "You have chosen to disable 'Sauron' and it's minions!"
+            WriteLog "You have chosen to disable 'Sauron' and its minions!"
             ACTION="disable"
             LOADER="unload"
             RUNNER="stop"
             break
             ;;
         "Enable Sauron's eye") 
-            WriteLog "You have chosen to enable 'Sauron' and it's minions!"
+            WriteLog "You have chosen to enable 'Sauron' and its minions!"
             ACTION="enable"
             LOADER="load"            
             RUNNER="start"
@@ -227,38 +192,3 @@ if [[ $val == *"McAfee"* ]]; then
 else 
     WriteLog "Can't locate the McAfee agent"
 fi
-
-
-#------------------------#
-# Stop & unload 
-#sudo launchctl unload -w /Library/LaunchDaemons/com.fireeye.xagt.plist
-#launchctl stop com.fireeye.xagtnotif
-# McAfee
-#sudo /usr/local/McAfee/AntiMalware/VSControl stopoas
-#sudo /usr/local/McAfee/AntiMalware/VSControl stop
-
-
-
-# Check processes:
-# ps aux | grep xagt
-
-# 1
-# sudo su - root
-# while :; do clear; launchctl list | grep mcafee; sleep 2; done
-
-# 2
-# while :; do clear; launchctl list | grep mcafee; sleep 2; done
-
-# 3
-# sudo su - root
-# while :; do clear; launchctl list | grep airwatch; sleep 2; done
-
-# 4
-# while :; do clear; launchctl list | grep airwatch; sleep 2; done
-
-# 5
-# sudo su - root
-# while :; do clear; launchctl list | grep xagt; sleep 2; done
-
-# 6
-# while :; do clear; launchctl list | grep xagt; sleep 2; done
