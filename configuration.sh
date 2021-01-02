@@ -26,8 +26,6 @@ airwatchPerUserAgentsArray=(
     "/Library/LaunchAgents/com.airwatch.mac.agent.plist" # user | IntelligentHubAgent.app | agent | unloadable
 )
 
-AIRWATCH_AGENT_PLIST="/Library/LaunchAgents/com.airwatch.mac.agent.plist" # user | IntelligentHubAgent.app | agent | unloadable
-
 #------------------------#
 # FireEye agent
 #------------------------#
@@ -39,8 +37,6 @@ fireEyeSystemWideDeamonsArray=(
 fireEyeAgentsArray=(
     "/Library/LaunchAgents/com.fireeye.xagtnotif.plist" # user | FireEye/xagt/xagtnotif.app | agent | unloadable
 )
-
-FIRE_EYE_XAGT_PLIST="/Library/LaunchDaemons/com.fireeye.xagt.plist"  # root | xagt DEAMON | deamon | unloadable
 
 #------------------------#
 # McAfee Threat Prevention
@@ -62,8 +58,6 @@ mcAfeeAgentsArray=(
     "/Library/LaunchAgents/com.mcafee.reporter.plist" # user | McAfee Reporter.app | agemt | unloadable
     "/Library/LaunchDaemons/com.mcafee.agentMonitor.helper.plist" # user | com.mcafee.agentMonitor.helper | deamon | unloadable
 )
-
-MCAFEE_MENULET_PLIST="/Library/LaunchAgents/com.mcafee.menulet.plist" # user | McAfee/MSS/Applications/Menulet.app | agent | unloadable
 
 # MCAFEE_UNINSTALL_SYSTEMEXTENSTION_PLIST="/Library/LaunchAgents/com.mcafee.uninstall.SystemExtension.plist" # root | McAfee deactivatesystemextension | agent | not unloadable
 # APPS

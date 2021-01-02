@@ -43,7 +43,7 @@ done
 #------------------------#
 # Handling AirWatch
 #------------------------#
-val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${AIRWATCH_AGENT_PLIST}")
+val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${airwatchPerUserAgentsArray[0]}")
 if [[ $val == *"Workspace ONE Intelligent Hub"* ]]; then
     WriteLog "You've got the Workspace ONE Agent"
 
@@ -97,7 +97,7 @@ fi
 #------------------------#
 # FireEye
 #------------------------#
-val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${FIRE_EYE_XAGT_PLIST}")
+val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${fireEyeSystemWideDeamonsArray[0]}")
 if [[ $val == *"xagt"* ]]; then
     WriteLog "You've got the FireEye XAGT Agent"
  
@@ -151,7 +151,7 @@ fi
 #------------------------#
 # McAfee
 #------------------------#
-val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${MCAFEE_MENULET_PLIST}")
+val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${mcAfeeAgentsArray[0]}")
 if [[ $val == *"McAfee"* ]]; then
     WriteLog "You've got the McAfee Agent"
  
