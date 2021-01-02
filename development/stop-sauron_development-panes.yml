@@ -1,0 +1,13 @@
+windows:
+  - name: stop-sauron_development-panes
+    layout: main-vertical
+    root: ~
+    panes:
+      - cd ~/Workspace/stop-sauron; chmod +x ./stop-sauron.sh; sudo ./stop-sauron.sh
+      - commands:
+        - |
+          sudo -u root -i << EOF
+          while :; do clear; launchctl list | grep -E 'mcafee|airwatch|xagt'; sleep 2; done
+          EOF
+        name: ' user'
+      - while :; do clear; launchctl list | grep -E 'mcafee|airwatch|xagt'; sleep 2; done
