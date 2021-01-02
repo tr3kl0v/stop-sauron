@@ -37,7 +37,7 @@ Select you demanded action out of the options
 
 | Packages | Version compatibility |
 | --- | --- |
-| macOS | Big Sur (11.0.1 - 11.1) |
+| MacOS | Big Sur (11.0.1 - 11.1) |
 | WorkSpace 1 | 20.10 |
 | FireEye | 33.22.6 |
 | McAfee | 10.7.5 (266) |
@@ -48,6 +48,10 @@ Adding more packages that harm your development & work velocity or personal priv
 
 ## Contributing
 
+Contributing is very appreciated, because it is not easy to have licensed access to all enterprise security tools out there on the planet.
+When you want to do development yourself have a look at the development [readme](https://github.com/tr3kl0v/stop-sauron/blob/main/development/DEVELOPMENT.md).
+
 ### Want to Help?
 
 Want to file a bug, contribute some code, or improve documentation? Excellent!
+Feel free to create an issue and submit all you think will help.
