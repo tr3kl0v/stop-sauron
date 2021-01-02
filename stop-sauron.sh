@@ -23,14 +23,12 @@ do
             WriteLog "You have chosen to disable 'Sauron' and its minions!"
             ACTION="disable"
             LOADER="unload"
-            RUNNER="stop"
             break
             ;;
         "Enable Sauron's eye") 
             WriteLog "You have chosen to enable 'Sauron' and its minions!"
             ACTION="enable"
             LOADER="load"            
-            RUNNER="start"
             break
             ;;
         "Cancel")
@@ -45,7 +43,7 @@ done
 #------------------------#
 # Handling AirWatch
 #------------------------#
-val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${AIRWATCH_AGENT_PLIST}")
+val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${airwatchPerUserAgentsArray[0]}")
 if [[ $val == *"Workspace ONE Intelligent Hub"* ]]; then
     WriteLog "You've got the Workspace ONE Agent"
 
@@ -60,8 +58,9 @@ if [[ $val == *"Workspace ONE Intelligent Hub"* ]]; then
             WriteLog "Root process ($PROCESS) already running -- skipping"
         else 
             WriteLog "Loading the Workspace ONE Deamon(s)"
-            /bin/launchctl $LOADER -w $AIRWATCH_DAEMON_PLIST
-            /bin/launchctl $LOADER -w $AIRWATCH_AWCM_PLIST
+            for t in ${airwatchSystemWideDeamonsArray[@]}; do
+                /bin/launchctl $LOADER -w $t
+            done
         fi
 
         # Check the USER processes from a root viewpoint
@@ -72,16 +71,23 @@ if [[ $val == *"Workspace ONE Intelligent Hub"* ]]; then
             WriteLog "User process ($PROCESS) already running -- skipping"
         else 
             WriteLog "Loading the Workspace ONE Program(s)"
-            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $AIRWATCH_AGENT_PLIST"
+            for u in ${airwatchPerUserAgentsArray[@]}; do
+                su - $SUDO_USER -c "/bin/launchctl $LOADER -w $u"
+            done
         fi
 
     # disable
     else 
         WriteLog "Unloading the Workspace ONE Deamon(s)"
-        /bin/launchctl $LOADER -w $AIRWATCH_DAEMON_PLIST
-        /bin/launchctl $LOADER -w $AIRWATCH_AWCM_PLIST
+
+        for t in ${airwatchSystemWideDeamonsArray[@]}; do
+            /bin/launchctl $LOADER -w $t
+        done
+
         WriteLog "Unloading the Workspace ONE Program(s)"
-        su - $SUDO_USER -c "/bin/launchctl $LOADER -w $AIRWATCH_AGENT_PLIST"
+        for u in ${airwatchPerUserAgentsArray[@]}; do
+            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $u"
+        done
     fi
 
 else 
@@ -91,7 +97,7 @@ fi
 #------------------------#
 # FireEye
 #------------------------#
-val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${FIRE_EYE_XAGT_PLIST}")
+val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${fireEyeSystemWideDeamonsArray[0]}")
 if [[ $val == *"xagt"* ]]; then
     WriteLog "You've got the FireEye XAGT Agent"
  
@@ -106,7 +112,9 @@ if [[ $val == *"xagt"* ]]; then
             WriteLog "Root process ($PROCESS) already running -- skipping"
         else 
             WriteLog "Loading the FireEye XAGT Deamon(s)"
-            /bin/launchctl $LOADER -w $FIRE_EYE_XAGT_PLIST
+            for t in ${fireEyeSystemWideDeamonsArray[@]}; do
+                /bin/launchctl $LOADER -w $t
+            done
         fi
 
         # Check the USER processes from a root viewpoint
@@ -117,15 +125,22 @@ if [[ $val == *"xagt"* ]]; then
             WriteLog "User process ($PROCESS) already running -- skipping"
         else 
             WriteLog "Loading the FireEye XAGT Program(s)"
-            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $FIRE_EYE_XAGTNOTIF_PLIST"
+            for t in ${fireEyeAgentsArray[@]}; do
+                su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+            done
         fi
 
     # disable
     else 
         WriteLog "Unloading the FireEye XAGT Deamon(s)"
-        /bin/launchctl $LOADER -w $FIRE_EYE_XAGT_PLIST
+        for t in ${fireEyeSystemWideDeamonsArray[@]}; do
+            /bin/launchctl $LOADER -w $t
+        done
+
         WriteLog "Unloading the FireEye XAGT Program(s)"
-        su - $SUDO_USER -c "/bin/launchctl $LOADER -w $FIRE_EYE_XAGTNOTIF_PLIST"
+        for t in ${fireEyeAgentsArray[@]}; do
+            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+        done
     fi
 
 
@@ -136,7 +151,7 @@ fi
 #------------------------#
 # McAfee
 #------------------------#
-val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${MCAFEE_MENULET_PLIST}")
+val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${mcAfeeAgentsArray[0]}")
 if [[ $val == *"McAfee"* ]]; then
     WriteLog "You've got the McAfee Agent"
  
@@ -151,14 +166,9 @@ if [[ $val == *"McAfee"* ]]; then
             WriteLog "Root process ($PROCESS) already running -- skipping"
         else 
             WriteLog "Loading the McAfee Deamon(s)"
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_PLIST
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_MCAM_PLIST
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_MACOMPAT_PLIST
-            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_AGENT_AGENTMONITOR_PLIST"
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_SSM_PLIST
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANFACTORY_PLIST
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANMANAGER_PLIST
-            /bin/launchctl $LOADER -w $MCAFEE_AGENT_VIRUSSCAN_PLIST
+            for t in ${mcAfeeSystemWideDeamonsArray[@]}; do
+                /bin/launchctl $LOADER -w $t
+            done
         fi
 
         # Check the USER processes from a root viewpoint
@@ -169,24 +179,21 @@ if [[ $val == *"McAfee"* ]]; then
             WriteLog "User process ($PROCESS) already running -- skipping"
         else 
             WriteLog "Loading the McAfee Program(s)"
-            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_MENULET_PLIST"
-            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_REPORTER_PLIST"
+            for t in ${mcAfeeAgentsArray[@]}; do
+               su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+            done
         fi
 
     # disable
     else 
         WriteLog "Unloading the McAfee Deamon(s)"
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_PLIST
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_MCAM_PLIST
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_MACOMPAT_PLIST
-        su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_AGENT_AGENTMONITOR_PLIST"
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_SSM_PLIST
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANFACTORY_PLIST
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_SCANMANAGER_PLIST
-        /bin/launchctl $LOADER -w $MCAFEE_AGENT_VIRUSSCAN_PLIST
+        for t in ${mcAfeeSystemWideDeamonsArray[@]}; do
+            /bin/launchctl $LOADER -w $t
+        done
         WriteLog "Unloading the McAfee Program(s)"
-        su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_MENULET_PLIST"
-        su - $SUDO_USER -c "/bin/launchctl $LOADER -w $MCAFEE_REPORTER_PLIST"
+        for t in ${mcAfeeAgentsArray[@]}; do
+            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+        done
     fi
 
 else 
