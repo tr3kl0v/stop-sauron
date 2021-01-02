@@ -36,6 +36,11 @@ $ brew install TomAnthony/brews/itermocil
 
 # Create your layout directory
 $ mkdir ~/.itermocil
+
+# add Zsh autocompletion
+# To get autocompletion when typing itermocil <Tab> in a zsh session, add this line to your ~/.zshrc file:
+$ compctl -g '~/.itermocil/*(:t:r)' itermocil
+
 ```
 
 Further information about iTermocil can be found [here](https://github.com/TomAnthony/itermocil).
@@ -82,6 +87,7 @@ $ brew install TomAnthony/brews/itermocil
 
 # Create your layout directory
 $ mkdir ~/.itermocil
+
 ```
 
 Further information about iTermocil can be found [here](https://github.com/TomAnthony/itermocil).
@@ -97,6 +103,7 @@ Copy the following [file](https://github.com/tr3kl0v/stop-sauron/blob/main/devel
 ```bash
 # copy iTermocil config
 $ cp ~/Workspace/stop-sauron/development/stop-sauron_development-panes.yml ~/.itermocil/stop-sauron_development-panes.yml
+
 ```
 
 You can start the development views simply by executing;
@@ -104,4 +111,5 @@ You can start the development views simply by executing;
 ```bash
 # start views
 $ itermocil stop-sauron_development-panes
+
 ```
