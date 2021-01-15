@@ -55,7 +55,7 @@ mcAfeeSystemWideDeamonsArray=(
 # AGENTS
 mcAfeeAgentsArray=(
     "/Library/LaunchAgents/com.mcafee.menulet.plist" # user | McAfee/MSS/Applications/Menulet.app | agent | unloadable
-    "/Library/LaunchAgents/com.mcafee.reporter.plist" # user | McAfee Reporter.app | agemt | unloadable
+    "/Library/LaunchAgents/com.mcafee.reporter.plist" # user | McAfee Reporter.app | agent | unloadable
     "/Library/LaunchDaemons/com.mcafee.agentMonitor.helper.plist" # user | com.mcafee.agentMonitor.helper | deamon | unloadable
 )
 
@@ -63,3 +63,18 @@ mcAfeeAgentsArray=(
 # APPS
 # MCAFEE_VSCONTROL_APP=sudo /usr/local/McAfee/AntiMalware/VSControl stopoas
 # MCAFEE_VSCONTROL_APP= sudo /usr/local/McAfee/AntiMalware/VSControl stop
+
+
+#------------------------#
+# Zscaler
+#------------------------#
+#  DEAMONS
+zscalerSystemWideDeamonsArray=(
+    "/Library/LaunchDaemons/com.zscaler.service.plist" # root | Zscaler/service | deamon | unloadable
+    # "/Library/LaunchDaemons/com.zscaler.tunnel.plist" # root | Zscaler/tunnel | deamon | unloadable
+)
+
+#  AGENTS
+zscalerAgentsArray=(
+    "/Library/LaunchAgents/com.zscaler.tray.plist" # user | Zscsaler/tray | agent | unloadable
+)
