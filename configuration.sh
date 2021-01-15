@@ -5,10 +5,9 @@ LOCAL_USER=$USER
 SUDO_USER=$SUDO_USER
 
 # PROCESS
-AIRWATCH_PROCESS="com.airwatch" 
+AIRWATCH_PROCESS="com.airwatch"
 FIRE_EYE_PROCESS="com.fireeye"
 MCAFEE_PROCESS="com.mcafee"
-
 
 #------------------------#
 # Software packages
@@ -19,7 +18,7 @@ MCAFEE_PROCESS="com.mcafee"
 # DEAMONS
 airwatchSystemWideDeamonsArray=(
     "/Library/LaunchDaemons/com.airwatch.airwatchd.plist" # root | AirWatch/hubd process | deamon | unloadable
-    "/Library/LaunchDaemons/com.airwatch.awcmd.plist" # root | AirWatch/awcmd process | deamon | unloadable
+    "/Library/LaunchDaemons/com.airwatch.awcmd.plist"     # root | AirWatch/awcmd process | deamon | unloadable
 )
 # AGENTS
 airwatchPerUserAgentsArray=(
@@ -31,7 +30,7 @@ airwatchPerUserAgentsArray=(
 #------------------------#
 # DEAMONS
 fireEyeSystemWideDeamonsArray=(
-    "/Library/LaunchDaemons/com.fireeye.xagt.plist"  # root | xagt DEAMON | deamon | unloadable
+    "/Library/LaunchDaemons/com.fireeye.xagt.plist" # root | xagt DEAMON | deamon | unloadable
 )
 # AGENTS
 fireEyeAgentsArray=(
@@ -43,19 +42,19 @@ fireEyeAgentsArray=(
 #------------------------#
 #  DEAMONS
 mcAfeeSystemWideDeamonsArray=(
-    "/Library/LaunchDaemons/com.mcafee.agent.ma.plist" # root | McAfee/agent/bin/masvc | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.agent.macmn.plist" # root | McAfee/agent/bin/macmnsv | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.agent.macompat.plist" # root | McAfee/agent/bin/macompatsvc | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.ssm.Eupdate.plist" # root | McAfee/AntiMalware/VShieldUpdate | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agent.ma.plist"        # root | McAfee/agent/bin/masvc | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agent.macmn.plist"     # root | McAfee/agent/bin/macmnsv | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agent.macompat.plist"  # root | McAfee/agent/bin/macompatsvc | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.ssm.Eupdate.plist"     # root | McAfee/AntiMalware/VShieldUpdate | deamon | unloadable
     "/Library/LaunchDaemons/com.mcafee.ssm.ScanFactory.plist" # root | McAfee/AntiMalware/VShieldScanner | deamon | unloadable
     "/Library/LaunchDaemons/com.mcafee.ssm.ScanManager.plist" # root | McAfee/AntiMalware/VShieldScanManager.app | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.virusscan.fmpd.plist" # root | McAfee/fmp/bin64/fmpd | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.virusscan.fmpd.plist"  # root | McAfee/fmp/bin64/fmpd | deamon | unloadable
 )
 
 # AGENTS
 mcAfeeAgentsArray=(
-    "/Library/LaunchAgents/com.mcafee.menulet.plist" # user | McAfee/MSS/Applications/Menulet.app | agent | unloadable
-    "/Library/LaunchAgents/com.mcafee.reporter.plist" # user | McAfee Reporter.app | agent | unloadable
+    "/Library/LaunchAgents/com.mcafee.menulet.plist"              # user | McAfee/MSS/Applications/Menulet.app | agent | unloadable
+    "/Library/LaunchAgents/com.mcafee.reporter.plist"             # user | McAfee Reporter.app | agent | unloadable
     "/Library/LaunchDaemons/com.mcafee.agentMonitor.helper.plist" # user | com.mcafee.agentMonitor.helper | deamon | unloadable
 )
 
@@ -63,7 +62,6 @@ mcAfeeAgentsArray=(
 # APPS
 # MCAFEE_VSCONTROL_APP=sudo /usr/local/McAfee/AntiMalware/VSControl stopoas
 # MCAFEE_VSCONTROL_APP= sudo /usr/local/McAfee/AntiMalware/VSControl stop
-
 
 #------------------------#
 # Zscaler
