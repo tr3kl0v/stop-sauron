@@ -53,7 +53,7 @@ done
 # Handling AirWatch
 #------------------------#
 
-# TODO: Doesn't work, when not plist are not existing
+# TODO: Doesn't work, when plist's are not existing
 #
 # val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${airwatchPerUserAgentsArray[0]}")
 # if [[ $val == *"Workspace ONE Intelligent Hub"* ]]; then
@@ -128,7 +128,7 @@ fi
 # FireEye
 #------------------------#
 
-# TODO: Doesn't work, when not plist are not existing
+# TODO: Doesn't work, when plist's are not existing
 #
 # val1=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${fireEyeSystemWideDeamonsArray[0]}")
 # if [[ $val1 == *"xagt"* ]]; then
@@ -210,7 +210,7 @@ fi
 # McAfee
 #------------------------#
 
-# TODO: Doesn't work, when not plist are not existing
+# TODO: Doesn't work, when plist's are not existing
 #
 # val2=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${mcAfeeAgentsArray[0]}")
 # if [[ $val2 == *"McAfee"* ]]; then
@@ -289,7 +289,7 @@ fi
 # Zscaler
 #------------------------#
 
-# TODO: Doesn't work, when not plist are not existing
+# TODO: Doesn't work, when plist's are not existing
 #
 # val3=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${zscalerSystemWideDeamonsArray[0]}")
 # if [[ $val3 == *"zscaler"* ]]; then
