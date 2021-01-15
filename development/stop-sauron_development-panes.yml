@@ -7,7 +7,7 @@ windows:
       - commands:
         - |
           sudo -u root -i << EOF
-          while :; do clear; launchctl list | grep -E 'mcafee|airwatch|xagt'; sleep 2; done
+          while :; do clear; launchctl list | grep -E 'mcafee|airwatch|xagt|zscaler'; sleep 2; done
           EOF
         name: ' user'
-      - while :; do clear; launchctl list | grep -E 'mcafee|airwatch|xagt'; sleep 2; done
+      - while :; do clear; launchctl list | grep -E 'mcafee|airwatch|xagt|zscaler'; sleep 2; done
