@@ -3,25 +3,24 @@
 #------------------------#
 # Logging
 #------------------------#
-WriteLog()
-{
-	/bin/echo `date`" --- "$1
+WriteLog() {
+    /bin/echo $(date)" --- "$1
 }
 
 #------------------------#
 # Validating number
 #------------------------#
-isNumber()
-{
+isNumber() {
     case $PROCESS in
-        ''|*[!0-9]*) false ;;
-        *) true ;;
-    esac 
-} 
+    '' | *[!0-9]*) false ;;
+    *) true ;;
+    esac
+}
 
 #------------------------#
 # Check if file exits
 #------------------------#
 isFile() {
     [ -f "$FILE" ]
+    # echo  "file - $FILE"
 }
