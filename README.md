@@ -8,6 +8,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 1. WorkSpace One (WS1) (Airwatch)
 2. FireEye XAGT agent(s)
 3. McAfee
+4. Zscaler
 
 ## Usage
 
@@ -41,6 +42,7 @@ Select you demanded action out of the options
 | WorkSpace 1 | 20.10 |
 | FireEye | 33.22.6 |
 | McAfee | 10.7.5 (266) |
+| Zscaler | 2.1.2.38 |
 
 ## Future plans
 
@@ -55,3 +57,11 @@ When you want to do development yourself have a look at the development [readme]
 
 Want to file a bug, contribute some code, or improve documentation? Excellent!
 Feel free to create an issue and submit all you think will help.
+
+### Disclaimer
+
+No liability for the contents of this documents can be accepted. Use the concepts, examples and other content at your own risk. There may be errors and inaccuracies, that may of course be damaging to your system. Although this is highly unlikely, you should proceed with caution. The author does not accept any responsibility for any damage incurred.
+
+All copyrights are held by their respective owners, unless specifically noted otherwise. Use of a term in this document should not be regarded as affecting the validity of any trademark or service mark.
+
+Naming of particular products or brands should not be seen as endorsements.
