@@ -1,15 +1,26 @@
 #!/bin/sh
 
-WriteLog ()
-{
-	# /bin/echo `date`" "$1 >> $LOG
-	/bin/echo `date`" --- "$1
+#------------------------#
+# Logging
+#------------------------#
+WriteLog() {
+    /bin/echo $(date)" --- "$1
 }
 
-isNumber ()
-{
+#------------------------#
+# Validating number
+#------------------------#
+isNumber() {
     case $PROCESS in
-        ''|*[!0-9]*) false ;;
-        *) true ;;
-    esac 
-} 
+    '' | *[!0-9]*) false ;;
+    *) true ;;
+    esac
+}
+
+#------------------------#
+# Check if file exits
+#------------------------#
+isFile() {
+    [ -f "$FILE" ]
+    # echo  "file - $FILE"
+}
