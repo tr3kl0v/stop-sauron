@@ -66,3 +66,81 @@ You can start the development views simply by executing;
 $ itermocil stop-sauron_development-panes
 
 ```
+
+## Downloading and creating VMWare images to develop & test against
+
+It is obvious that you shouldn't test against your primary installation of the MacOs. True, there will be a moment, that you must gamble and try it out, but this risk will be less if you're pretty sure the tests survived on a VMWare image.
+
+| MacOS version | Download link / method | Method to create VMWare image* |
+| --- | --- | --- |
+| Snow Leopard - 10.6.8 |  [archive.org](https://archive.org/details/SnowLeopardInstall) | TBD |
+| Lion - 10.7.5 | [archive.org](https://archive.org/details/mac-os-x-10.7.5) | TBD |
+| Mountain Lion - 10.8.5 | [AllMacworld.com](https://allmacworld.com/mac-os-x-mountain-lion-10-8-5-free-download/) | TBD |
+| Mavericks - 10.9.5 | [AllMacworld.com](https://allmacworld.com/mac-os-x-mavericks-10-9-5-free-download/) | TBD |
+| El Capitan - 10.11.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-41424-20191024-218af9ec-cf50-4516-9011-228c78eda3d2/InstallMacOSX.dmg) |  TBD |
+| Sierra - 10.12.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-39476-20191023-48f365f4-0015-4c41-9f44-39d3d2aca067/InstallOS.dmg) |  TBD |
+| High Sierra - 10.13.6 | [Apple Store link](https://apps.apple.com/us/app/macos-high-sierra/id1246284741?ls=1&mt=12) | 1 |
+| Mojave - 10.14.6 | [Apple Store link](https://apps.apple.com/gb/app/macos-mojave/id1398502828?mt=12) | 1 |
+| Catalina - 10.15.7 | [Apple Store link](https://apps.apple.com/sg/app/macos-catalina/id1466841314?mt=12) | 1 |
+| Big Sur - 11.1 | [Apple Store link](https://apps.apple.com/us/app/macos-big-sur/id1526878132?mt=12) | 1 |
+
+* Download links are provided as is. Please let me know when a link is dead
+
+### Method 1 --  Create a bootable installer for macOS
+
+#### What you need to create a bootable installer
+
+A USB flash drive or other secondary volume, formatted as Mac OS Extended, with at least 12GB of available storage. A downloaded installer for macOS Big Sur, Catalina, Mojave, High Sierra, or El Capitan
+
+#### Use the 'createinstallmedia' command in Terminal
+
+* Connect the USB flash drive or other volume that you're using for the bootable installer. 
+* Open iTerm, which is in the Utilities folder of your Applications folder.
+* Type or paste one of the following commands in iTerm. These assume that the installer is in your `Applications` folder, and `MyVolume` is the name of the USB flash drive or other volume you're using. If it has a different name, replace `MyVolume` in these commands with the name of your volume.
+
+Big Sur:*
+
+```bash
+# Create bootable disk
+$ sudo /Applications/Install\ macOS\ Big\ Sur.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+
+```
+
+Catalina:*
+
+```bash
+# Create bootable disk
+$ sudo /Applications/Install\ macOS\ Catalina.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+```
+
+Mojave:*
+
+```bash
+# Create bootable disk
+$ sudo /Applications/Install\ macOS\ Mojave.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+
+```
+
+High Sierra:*
+
+```bash
+# Create bootable disk
+$ sudo /Applications/Install\ macOS\ High\ Sierra.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume
+```
+
+El Capitan:
+
+```bash
+# Create bootable disk
+$ sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume --applicationpath /Applications/Install\ OS\ X\ El\ Capitan.app
+```
+
+* If your Mac is using macOS Sierra or earlier, include the --applicationpath argument and installer path, similar to the way this is done in the command for El Capitan.
+
+After typing the command:
+
+1. Press Return to enter the command.
+2. When prompted, type your administrator password and press Return again. Terminal doesn't show any characters as you type your password.
+3. When prompted, type Y to confirm that you want to erase the volume, then press Return. Terminal shows the progress as the volume is erased.
+4. After the volume is erased, you may see an alert that Terminal would like to access files on a removable volume. Click OK to allow the copy to proceed. 
+5. When Terminal says that it's done, the volume will have the same name as the installer you downloaded, such as Install macOS Big Sur. You can now quit Terminal and eject the volume.
