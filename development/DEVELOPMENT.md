@@ -77,9 +77,9 @@ It is obvious that you shouldn't test against your primary installation of the M
 | Lion - 10.7.5 | [archive.org](https://archive.org/details/mac-os-x-10.7.5) | TBD |
 | Mountain Lion - 10.8.5 | [AllMacworld.com](https://allmacworld.com/mac-os-x-mountain-lion-10-8-5-free-download/) | TBD |
 | Mavericks - 10.9.5 | [AllMacworld.com](https://allmacworld.com/mac-os-x-mavericks-10-9-5-free-download/) | TBD |
-| El Capitan - 10.11.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-41424-20191024-218af9ec-cf50-4516-9011-228c78eda3d2/InstallMacOSX.dmg) |  TBD |
-| Sierra - 10.12.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-39476-20191023-48f365f4-0015-4c41-9f44-39d3d2aca067/InstallOS.dmg) |  TBD |
-| High Sierra - 10.13.6 | [Apple Store link](https://apps.apple.com/us/app/macos-high-sierra/id1246284741?ls=1&mt=12) | 1 |
+| El Capitan - 10.11.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-41424-20191024-218af9ec-cf50-4516-9011-228c78eda3d2/InstallMacOSX.dmg) |  2 |
+| Sierra - 10.12.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-39476-20191023-48f365f4-0015-4c41-9f44-39d3d2aca067/InstallOS.dmg) |  2 |
+| High Sierra - 10.13.6 | [Apple Store link](https://apps.apple.com/us/app/macos-high-sierra/id1246284741?ls=1&mt=12) | TBD |
 | Mojave - 10.14.6 | [Apple Store link](https://apps.apple.com/gb/app/macos-mojave/id1398502828?mt=12) | 1 |
 | Catalina - 10.15.7 | [Apple Store link](https://apps.apple.com/sg/app/macos-catalina/id1466841314?mt=12) | 1 |
 | Big Sur - 11.1 | [Apple Store link](https://apps.apple.com/us/app/macos-big-sur/id1526878132?mt=12) | 1 |
@@ -157,3 +157,16 @@ Open VMware Fusion create a new VM.
 6. VMWare has detected the correct guest operating system as MacOs 10.15 in this example and provided specs for the VM. You just can continue with the creation by pressing "Finish".
 
 Your VM will now be created and it takes normally between 15 ~ 45 minutes to finish. After the installation of MacOs don't forget to install the VMware tools to ease the interaction between your host and guest system.
+### Method 2 --  Create a bootable installer for macOS
+
+Method is two is slightly different because it is a workaround to get an older version of MacOS working.
+
+If you have a Mac which is too new to run Yosemite, El Capitan or Sierra and no access to an older Mac, then the following process works.
+
+1. Download the full installer for the version of macOS that your Mac is currently running or is able to run (High Sierra, Mojave, Catalina or BigSur). The normal method via App Store gives you an installer application in your /Applications folder.
+2. Use that installer application to create a VM and set it up. Install VMware Tools for convenience.
+3. From inside the VM, open the .dmg file for the Yosemite, El Capitan or Sierra installer, and open the package. The installer recognizes it is running in a VM and bypasses the model check, so it will create an installer application for the target version in the VMs Applications folder.
+4. Copy the installer application for the older OS back to the host.
+5. Use the installer application for the older OS to create a VM for the version you want.
+
+During the installation of the older versions of MacOS X, you'll get notification that the keyboard & mouse are not working in e.g. Yosemite. and to fix that you need to shut down the virtual machine and going into its *Settings* and choosing *USB & Bluetooth*, then expand *Advanced USB options* and set the *USB Compatibility* option to *USB 2.0* or lower.  Boot up the VM and the guest OS will be able to use the keyboard and mouse.
