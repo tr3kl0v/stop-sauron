@@ -44,9 +44,9 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | Lion (10.7 - 10.7.5) | :heavy_check_mark: |
 |  | Mountain Lion (10.8 - 10.8.5) | :heavy_check_mark: |
 |  | Mavericks (10.9 - 10.9.5) | :heavy_check_mark: |
-|  | Yosemite (10.10 - 10.10.5) | :heavy_check_mark: |
-|  | El Capitan (10.11 - 10.11.6) | :heavy_check_mark: |
-|  | Sierra (10.12 - 10.12.6) | :heavy_check_mark: |
+|  | Yosemite (10.10 - 10.10.5) | :white_check_mark: |
+|  | El Capitan (10.11 - 10.11.6) | :white_check_mark: |
+|  | Sierra (10.12 - 10.12.6) | :white_check_mark: |
 |  | High Sierra (10.13 - 10.13.6) | :heavy_check_mark: |
 |  | Mojave (10.14 - 10.14.6) | :white_check_mark: |
 |  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
