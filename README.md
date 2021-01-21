@@ -36,7 +36,7 @@ Select you demanded action out of the options
 
 ## Compatibility
 
-Stop Sauron supports the software packages mentioned in the table below on OSX. The test column can have several states. The :white_check_mark: means 100% tested on the complete software and the :small_red_triangle_down: means tested, but not on all packages options. For example McAfee has many options like a webfirewall, threat prevention, etc. The :heavy_check_mark: means that according to several sources like man documentation of the functions used on bash this shouldw work, but is not yet tested and the :x: means does not work.
+Stop Sauron supports the software packages mentioned in the table below on OSX. The test column can have several states. The :white_check_mark: means :100:% tested on the complete software package and the :small_red_triangle_down: means tested, but not on all software packages options. For example McAfee has many options like a webfirewall, threat prevention, etc. The :heavy_check_mark: means that according to several sources like man documentation of the functions used on bash this should work, but is not yet tested and the :x: means does not work.
 
 | Packages | Version | Tested |
 | :--- | :--- | ---: |
