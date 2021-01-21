@@ -36,13 +36,23 @@ Select you demanded action out of the options
 
 ## Compatibility
 
-| Packages | Version compatibility |
-| --- | --- |
-| MacOS | Snow Leopard (10.6 - 10.6.8)<br> Lion (10.7 - 10.7.5)<br> Mountain Lion (10.8 - 10.8.5)<br> Mavericks (10.9 - 10.9.5)<br> Yosemite (10.10 - 10.10.5)<br> El Capitan (10.11 - 10.11.6)<br>  Sierra (10.12 - 10.12.6)<br> High Sierra (10.13 - 10.13.6)<br> Mojave (10.14 - 10.14.6)<br> Catalina (10.15 - 10.15.7)<br>  Big Sur (11.0.1 - 11.1) |
-| WorkSpace 1 | 20.10 |
-| FireEye | 33.22.6 |
-| McAfee | 10.7.5 (266) |
-| Zscaler | 2.1.2.38 |
+| Packages | Version | Tested |
+| :--- | :--- | ---: |
+| MacOS | Snow Leopard (10.6 - 10.6.8) | |
+|  | Lion (10.7 - 10.7.5) | |
+|  | Mountain Lion (10.8 - 10.8.5) | |
+|  | Mavericks (10.9 - 10.9.5) | |
+|  | Yosemite (10.10 - 10.10.5) | |
+|  | El Capitan (10.11 - 10.11.6) | |
+|  | Sierra (10.12 - 10.12.6) | |
+|  | High Sierra (10.13 - 10.13.6) | |
+|  | Mojave (10.14 - 10.14.6) | |
+|  | Catalina (10.15 - 10.15.7) | |
+|  | Big Sur (11.0.1 - 11.1) | :white_check_mark: |
+| WorkSpace 1 | 20.10 | :white_check_mark: |
+| FireEye | 33.22.6 | :white_check_mark: |
+| McAfee | 10.7.5 (266) | :small_red_triangle_down: |
+| Zscaler | 2.1.2.38 | :small_red_triangle_down: |
 
 ## Future plans
 
