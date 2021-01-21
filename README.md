@@ -36,7 +36,7 @@ Select you demanded action out of the options
 
 ## Compatibility
 
-Stop Sauron supports the software packages mentioned in the table below on OSX. The test column can have several states. The :white_check_mark: means :100:% tested on the complete software package and the :small_red_triangle_down: means tested, but not on all software packages options. For example McAfee has many options like a webfirewall, threat prevention, etc. The :heavy_check_mark: means that according to several sources like man documentation of the functions used on bash this should work, but is not yet tested and the :x: means does not work.
+Stop Sauron supports the software packages mentioned in the table below on OSX. The test column can have several states. The :white_check_mark: means :100:% tested on the complete software package and the :small_red_triangle_down: means tested, but not on all software packages options. For example McAfee has many options like a webfirewall, threat prevention, etc. The :heavy_check_mark: means that according to a variant of sources, e.g. documentation `$ man launchctl`, the functions should work, but is not yet tested. The :x: means it does not work.
 
 | Packages | Version | Tested |
 | :--- | :--- | ---: |
@@ -48,8 +48,8 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | El Capitan (10.11 - 10.11.6) | :heavy_check_mark: |
 |  | Sierra (10.12 - 10.12.6) | :heavy_check_mark: |
 |  | High Sierra (10.13 - 10.13.6) | :heavy_check_mark: |
-|  | Mojave (10.14 - 10.14.6) | :heavy_check_mark: |
-|  | Catalina (10.15 - 10.15.7) | :heavy_check_mark: |
+|  | Mojave (10.14 - 10.14.6) | :white_check_mark: |
+|  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
 |  | Big Sur (11.0.1 - 11.1) | :white_check_mark: |
 | WorkSpace 1 | 20.10 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
