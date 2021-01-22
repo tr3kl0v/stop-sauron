@@ -79,12 +79,12 @@ It is obvious that you shouldn't test against your primary installation of the M
 | Mavericks - 10.9.5 | [AllMacworld.com](https://allmacworld.com/mac-os-x-mavericks-10-9-5-free-download/) | TBD |
 | El Capitan - 10.11.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-41424-20191024-218af9ec-cf50-4516-9011-228c78eda3d2/InstallMacOSX.dmg) |  2 |
 | Sierra - 10.12.6 | [Apple CDN link](http://updates-http.cdn-apple.com/2019/cert/061-39476-20191023-48f365f4-0015-4c41-9f44-39d3d2aca067/InstallOS.dmg) |  2 |
-| High Sierra - 10.13.6 | [Apple Store link](https://apps.apple.com/us/app/macos-high-sierra/id1246284741?ls=1&mt=12) | TBD |
+| High Sierra - 10.13.6 | [Apple Store link](https://apps.apple.com/us/app/macos-high-sierra/id1246284741?ls=1&mt=12) | 1 |
 | Mojave - 10.14.6 | [Apple Store link](https://apps.apple.com/gb/app/macos-mojave/id1398502828?mt=12) | 1 |
 | Catalina - 10.15.7 | [Apple Store link](https://apps.apple.com/sg/app/macos-catalina/id1466841314?mt=12) | 1 |
 | Big Sur - 11.1 | [Apple Store link](https://apps.apple.com/us/app/macos-big-sur/id1526878132?mt=12) | 1 |
 
-* Download links are provided as is. Please let me know when a link is dead
+* Alternative, but very handy tool to download the latest 4 versions of MacOS can be found [here]{https://github.com/munki/macadmin-scripts}. The download links are provided as is. Please let me know when a link is dead
 
 ### Method 1 --  Create a bootable installer for macOS
 
