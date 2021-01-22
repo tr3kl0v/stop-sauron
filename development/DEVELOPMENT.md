@@ -84,7 +84,7 @@ It is obvious that you shouldn't test against your primary installation of the M
 | Catalina - 10.15.7 | [Apple Store link](https://apps.apple.com/sg/app/macos-catalina/id1466841314?mt=12) | 1 |
 | Big Sur - 11.1 | [Apple Store link](https://apps.apple.com/us/app/macos-big-sur/id1526878132?mt=12) | 1 |
 
-* Alternative, but very handy tool to download the latest 4 versions of MacOS can be found [here]{https://github.com/munki/macadmin-scripts}. The download links are provided as is. Please let me know when a link is dead
+* Alternative, but very handy tool to download the latest 4 versions of MacOS can be found [here](https://github.com/munki/macadmin-scripts). The download links are provided as is. Please let me know when a link is dead
 
 ### Method 1 --  Create a bootable installer for macOS
 
