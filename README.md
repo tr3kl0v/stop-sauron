@@ -12,7 +12,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 
 ## Usage
 
-Use at your own risk, but know I'm using it quite often.
+Use at your own risk, but know I'm continuously using it on daily basis.
 
 Make the script executable:
 
@@ -50,12 +50,13 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | High Sierra (10.13 - 10.13.6) | :white_check_mark: |
 |  | Mojave (10.14 - 10.14.6) | :white_check_mark: |
 |  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
-|  | Big Sur (11.0.1 - 11.1) | :white_check_mark: |
+|  | Big Sur (11.0.1 - 11.2) | :white_check_mark: |
 | WorkSpace 1 | 20.10 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee | 10.7.5 (266) | :small_red_triangle_down: |
 | Zscaler | 2.1.2.38 | :small_red_triangle_down: |
 
+The script is written for GNU bash, version 3.2.* which is the used version for OSX & MacOS since the release of Lion.
 
 ## Future plans
 
@@ -70,6 +71,10 @@ When you want to do development yourself have a look at the development [readme]
 
 Want to file a bug, contribute some code, or improve documentation? Excellent!
 Feel free to create an issue and submit all you think will help.
+
+### Appendix
+
+View [Appendix](https://github.com/tr3kl0v/stop-sauron/blob/main/development/APPENDIX.md) for references and sources for ideas.
 
 ### Disclaimer
 
