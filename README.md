@@ -74,7 +74,7 @@ Feel free to create an issue and submit all you think will help.
 
 ### Appendix
 
-View [Appendix](https://github.com/tr3kl0v/stop-sauron/blob/main/development/APPENDIX.md) for references and sources for ideas.
+View [appendix](https://github.com/tr3kl0v/stop-sauron/blob/main/APPENDIX.md) for references and sources for ideas.
 
 ### Disclaimer
 
