@@ -4,14 +4,32 @@
 LOCAL_USER=$USER
 SUDO_USER=$SUDO_USER
 
-# PROCESS
-AIRWATCH_PROCESS="com.airwatch"
-FIRE_EYE_PROCESS="com.fireeye"
-MCAFEE_PROCESS="com.mcafee"
+# logs
+SYSTEM_LOG_LOCATION="/var/log/"
+USER_LOG_LOCATION="~/."
+LOGFILE="debug-sauron.log"
+
+#------------------------#
+# Plist paths
+#------------------------#
+plistPathArray=(
+#    "~/Library/LaunchAgents"         # Per-user agents provided by the user.
+    "/Library/LaunchAgents"          # Per-user agents provided by the administrator.
+    "/Library/LaunchDaemons"         # System wide daemons provided by the administrator.
+    "/System/Library/LaunchAgents"   # Mac OS X Per-user agents.
+    "/System/Library/LaunchDaemons"  # Mac OS X System wide daemons.
+)
 
 #------------------------#
 # Software packages
 #------------------------#
+applicationsArray=(
+    "com.airwatch"
+    "com.fireeye"
+    "com.mcafee"
+    "com.zscaler"
+)
+
 #------------------------#
 # VMWare Workspace one | Airwatch
 #------------------------#

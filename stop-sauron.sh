@@ -10,14 +10,16 @@
 #------------------------#
 . configuration.sh
 . shared.sh
-
-WriteLog "Hello '$SUDO_USER', as expected you're currently '$LOCAL_USER'!"
+. inspect.sh
 
 #------------------------#
 # Check processes before menu
 #------------------------#
+prepare;
 
-# TODO New feat
+
+
+WriteLog "Hello '$SUDO_USER', as expected you're currently '$LOCAL_USER'!"
 
 #------------------------#
 # Options menu
