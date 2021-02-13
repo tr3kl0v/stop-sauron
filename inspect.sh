@@ -51,22 +51,26 @@ createLogFile() {
 #}
 
 findFiles() {
+    
+    plistArray=()
+
     for t in ${applicationsArray[@]}; do
         
         writeLog "[Application] - Locate --> $t"
         # loop through sudo- & system Launch folders
         for v in ${plistPathArray[@]}; do
 
-            array=()
             # find files in folder defined 
             find $v -name "${t}*" -print0 >tmpfile
             while IFS=  read -r -d $'\0'; do
-                writeLog "[Application] - $t --> Found --> $REPLY"
-                array+=("$REPLY")
+                writeLog "[Plist] - $t --> Found --> $REPLY"
+                plistArray+=("$REPLY")
             done <tmpfile
             rm -f tmpfile
 
         done
+
+        writeLog "[Plist] - Array --> size: ${#plistArray[@]}"
 
         # User folder
         # echo $HOME
