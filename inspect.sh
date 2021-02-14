@@ -4,8 +4,13 @@
 # Search for deamons, plists and Installtion file on current systems
 #------------------------#
 prepare() {
+    writeLog "-------------------"
+    writeLog "[Prepare] - Start"
+
     createLogFile;
     findFiles;
+
+    writeLog "[Prepare] - Stop"
 }
 
 createLogFile() {
@@ -20,10 +25,9 @@ createLogFile() {
 
     # Check if logfile exits on system
     if [ -f $USER_LOG_FILE ]; then
-        writeLog "-------------------"
-        writeLog "[Logfile] - Found on system"
+        writeLog "[Logfile] - File located on system"
     else        
-        writeEcho "[Logfile] - Not found on system"
+        writeEcho "[Logfile] - File not found on system"
         writeEcho "[Logfile] - Creating logFile"
 
         #if isFolder $logLocation; then
@@ -35,12 +39,10 @@ createLogFile() {
 
         # Create new logfile
         echo "$(date) --- [Logfile] - created" > $USER_LOG_FILE
-        writeLog "-------------------"
 
       #fi
 
     fi
-    writeLog "[Session] - Start"
 }
 
 #inspectDeamons() {
@@ -52,6 +54,8 @@ createLogFile() {
 
 findFiles() {
     
+    writeLog "[Files] - Start --> Find Plists"
+
     plistArray=()
 
     for t in ${applicationsArray[@]}; do
@@ -79,6 +83,9 @@ findFiles() {
         # echo $CHECK
 
     done
+
+    writeLog "[Files] - Resolved --> Find Plists"
+
 }
 
 #inspectInstallationFile(){

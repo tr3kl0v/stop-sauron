@@ -17,20 +17,22 @@
 #------------------------#
 prepare;
 
-
+writeLog "[Session] - Start"
 writeLog "[User] - ID --> $SUDO_USER"
 writeLog "[User] - Mode --> $LOCAL_USER"
+
+# get greeting
 greeting;
-writeEcho "${greet} '$SUDO_USER'. What do you have in mind for Sauron?"
+writeEcho "${greet} '$SUDO_USER'. What do you have in mind for Sauron's eye?"
 
 #------------------------#
 # Options menu
 #------------------------#
 PS3='Please enter your choice: '
-options=("Disable Sauron's eye" "Enable Sauron's eye" "Cancel")
+options=("Disable" "Enable" "Abort")
 select opt in "${options[@]}"; do
     case $opt in
-    "Disable Sauron's eye")
+    "Disable")
         writeLog "[Select] - 1 --> Disable"
         writeEcho "You have chosen to disable 'Sauron' and its minions!"
         writeEcho "Processing..."
@@ -38,7 +40,7 @@ select opt in "${options[@]}"; do
         LOADER="unload"
         break
         ;;
-    "Enable Sauron's eye")
+    "Enable")
         writeLog "[Select] - 2 --> Enable"
         writeEcho "You have chosen to enable 'Sauron' and its minions!"
         writeEcho "Processing..."
@@ -46,10 +48,11 @@ select opt in "${options[@]}"; do
         LOADER="load"
         break
         ;;
-    "Cancel")
-        writeLog "[Select] - 3 --> Cancel"
+    "Abort")
+        writeLog "[Select] - 3 --> Abort"
         writeEcho "Bye!"
         writeLog "[Session] - End"
+        writeLog "-------------------"
         exit
         break
         ;;
