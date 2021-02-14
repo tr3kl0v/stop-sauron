@@ -4,11 +4,11 @@
 # Logging
 #------------------------#
 writeLog() {
-    /bin/echo $(date)" --- "$1 >> $USER_LOG_FILE
+    /bin/echo $(date)" - "$1 >> $USER_LOG_FILE
 }
 
 writeEcho() {
-    /bin/echo $(date)" --- "$1
+    /bin/echo $(date)" - "$1
 }
 
 #------------------------#
