@@ -9,6 +9,7 @@ prepare() {
 
     createLogFile;
     findFiles;
+    inspectDeamons;
 
     writeLog "[Prepare] - Stop"
 }
@@ -25,9 +26,9 @@ createLogFile() {
 
     # Check if logfile exits on system
     if [ -f $USER_LOG_FILE ]; then
-        writeLog "[Logfile] - File located on system"
+        writeLog "[Logfile] - File found"
     else        
-        writeEcho "[Logfile] - File not found on system"
+        writeEcho "[Logfile] - File not found!"
         writeEcho "[Logfile] - Creating logFile"
 
         #if isFolder $logLocation; then
@@ -45,12 +46,50 @@ createLogFile() {
     fi
 }
 
-#inspectDeamons() {
+inspectDeamons() {
     
-    # PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'airwatch' | awk '{print $1}')
-    
-    # deamonNameArray
-#}
+    writeLog "[PS] - Start --> Find processes"
+
+    processArray=()
+
+    writeLog "[Plist] - find Deamon process"
+    for i in ${plistArray[@]}; do
+        
+        # Get path
+        dirname="${i%/*}"
+
+        # Get last folder
+        basename="${dirname##*/}"
+
+        # strip path from filename
+        filename="$(basename -- $i)"
+        
+        # Get file nime without extension
+        filename="${filename%.*}"
+
+        if [[ "$basename" == "LaunchAgents" ]]; then
+            # Check the USER processes from a root viewpoint
+            var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
+            PROCESS=$(echo $var1 | awk '{print $1}')
+        else
+            # Get Deamon PID
+            PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
+        fi
+        
+        # Check if process is a number
+        if isNumber; then
+            processArray+=("$PROCESS")
+        else
+            processArray+=("0")
+        fi
+        writeLog "[PS] - $filename --> PID --> $PROCESS"
+
+    done
+
+    writeLog "[PS] - Array --> size: ${#processArray[@]}"
+    writeLog "[PS] - Resolved --> Find processes"
+
+}
 
 findFiles() {
     
@@ -61,14 +100,17 @@ findFiles() {
     for t in ${applicationsArray[@]}; do
         
         writeLog "[Application] - Locate --> $t"
+       
         # loop through sudo- & system Launch folders
         for v in ${plistPathArray[@]}; do
 
-            # find files in folder defined 
+            # find plist files in folder defined and add them to array
             find $v -name "${t}*" -print0 >tmpfile
             while IFS=  read -r -d $'\0'; do
-                writeLog "[Plist] - $t --> Found --> $REPLY"
-                plistArray+=("$REPLY")
+
+            plistArray+=("$REPLY")
+            writeLog "[Plist] - $t --> found --> $REPLY"
+                           
             done <tmpfile
             rm -f tmpfile
 
