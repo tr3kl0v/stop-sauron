@@ -70,6 +70,7 @@ When you want to do development yourself have a look at the development [readme]
 ### Want to Help?
 
 Want to file a bug, contribute some code, or improve documentation? Excellent!
+Please run stop-sauron with the `-x` flag and submit the generated `debug.log` always in your ticket.
 Feel free to create an issue and submit all you think will help.
 
 ### Appendix
