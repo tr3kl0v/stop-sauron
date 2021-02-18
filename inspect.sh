@@ -7,9 +7,11 @@ prepare() {
     writeLog "-------------------"
     writeLog "[Prepare] - Start"
 
-    createLogFile;
+    if [[ "$debugFlag" == "true" ]]; then
+        createLogFile;
+    fi
     findFiles;
-    inspectDeamons;
+    findProcesses;
 
     writeLog "[Prepare] - Stop"
 }
@@ -46,7 +48,7 @@ createLogFile() {
     fi
 }
 
-inspectDeamons() {
+findProcesses() {
     
     writeLog "[PS] - Start --> Find processes"
 
@@ -61,7 +63,7 @@ inspectDeamons() {
         # Get last folder
         basename="${dirname##*/}"
 
-        # strip path from filename
+        # Strip path from filename
         filename="$(basename -- $i)"
         
         # Get file nime without extension
@@ -71,9 +73,14 @@ inspectDeamons() {
             # Check the USER processes from a root viewpoint
             var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
             PROCESS=$(echo $var1 | awk '{print $1}')
+
+            # su - $SUDO_USER -c "/bin/launchctl list $filename"
         else
             # Get Deamon PID
             PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
+
+            # /bin/launchctl list $filename
+
         fi
         
         # Check if process is a number
@@ -82,6 +89,7 @@ inspectDeamons() {
         else
             processArray+=("0")
         fi
+
         writeLog "[PS] - $filename --> PID --> $PROCESS"
 
     done
