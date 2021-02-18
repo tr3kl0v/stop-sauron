@@ -12,6 +12,22 @@
 . shared.sh
 . inspect.sh
 
+
+#------------------------#
+# Check flags before doing anyhing else
+#------------------------#
+debugFlag='false'
+
+while getopts 'x' flag; do
+    case "${flag}" in
+        x) 
+            debugFlag='true' ;;
+        *) 
+            printGetOptsMenuUsage
+        exit 1 ;;
+    esac
+done
+
 #------------------------#
 # Check processes before menu
 #------------------------#

@@ -4,7 +4,9 @@
 # Logging
 #------------------------#
 writeLog() {
-    /bin/echo $(date)" - "$1 >> $USER_LOG_FILE
+     if [[ "$debugFlag" == "true" ]]; then
+        /bin/echo $(date)" - "$1 >> $USER_LOG_FILE
+    fi
 }
 
 writeEcho() {
@@ -37,7 +39,7 @@ isFolder() {
 
 
 #------------------------#
-# Greating
+# Greeting message
 #------------------------#
 greeting() {
     hour=`date +%H`
@@ -50,3 +52,20 @@ greeting() {
         greet="Good evening"
     fi
 }
+
+#------------------------#
+# Print GetOps Menu uasage message
+#------------------------#
+printGetOptsMenuUsage() {
+    
+    echo "Stop Sauron - To stop the all seeing eye of Sauron and make your MacBook operate as it should be."
+    echo " "
+    echo "Stop Sauron [options] application [arguments]"
+    echo " "
+    echo "options:"
+    # echo "-h, --help                show brief help"
+    echo "-x, --debugFlag=true       enable debug logging"
+    # echo "-o, --output-dir=DIR      specify a directory to store output in"
+
+}
+
