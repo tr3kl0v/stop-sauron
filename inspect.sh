@@ -56,7 +56,7 @@ findProcesses() {
 
     writeLog "[Plist] - find Deamon process"
     for i in ${plistArray[@]}; do
-        
+
         # Get path
         dirname="${i%/*}"
 
@@ -66,7 +66,7 @@ findProcesses() {
         # Strip path from filename
         filename="$(basename -- $i)"
         
-        # Get file nime without extension
+        # Get filename without extension
         filename="${filename%.*}"
 
         if [[ "$basename" == "LaunchAgents" ]]; then
@@ -75,14 +75,25 @@ findProcesses() {
             PROCESS=$(echo $var1 | awk '{print $1}')
 
             # su - $SUDO_USER -c "/bin/launchctl list $filename"
+            
         else
             # Get Deamon PID
             PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
 
             # /bin/launchctl list $filename
+#
+            # find plist files in folder defined and add them to array
+            # find $v -name "${t}*" -print0 >tmpfile
+            # while IFS=  read -r -d $'\0'; do
 
+            # plistArray+=("$REPLY")
+            # writeLog "[Plist] - $t --> found --> $REPLY"
+                           
+            # done <tmpfile
+            # rm -f tmpfile
+#
         fi
-        
+                
         # Check if process is a number
         if isNumber; then
             processArray+=("$PROCESS")

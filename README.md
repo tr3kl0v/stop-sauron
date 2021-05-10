@@ -50,7 +50,7 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | High Sierra (10.13 - 10.13.6) | :white_check_mark: |
 |  | Mojave (10.14 - 10.14.6) | :white_check_mark: |
 |  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
-|  | Big Sur (11.0.1 - 11.2.1) | :white_check_mark: |
+|  | Big Sur (11.0.1 - 11.3.1) | :white_check_mark: |
 | WorkSpace 1 | 20.10 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee | 10.7.5 (266) | :small_red_triangle_down: |
