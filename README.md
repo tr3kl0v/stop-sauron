@@ -55,9 +55,10 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 | WorkSpace 1 | (20.10.0 - 22.01.0 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee Endpoint Security for Mac | 10.7.8 (186) | :small_red_triangle_down: |
-| McAfee Threat Prevention | 10.7.8 (128) | :small_red_triangle_down: |
-| McAfee Firewall | 10.7.8 (115) | :small_red_triangle_down: |
-| Zscaler | 2.1.2.38 | :small_red_triangle_down: |
+| McAfee Threat Prevention | 10.7.8 (128) | :white_check_mark: |
+| McAfee Firewall | 10.7.8 (115) | :white_check_mark: |
+| Zscaler | 2.1.2.38 | :white_check_mark: |
+| Cylance | 2.1.1594.518 - 3.0.1000.511 | :heavy_check_mark: |
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 

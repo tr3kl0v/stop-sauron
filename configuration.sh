@@ -97,76 +97,13 @@ zscalerAgentsArray=(
 )
 
 #------------------------#
-# Colours
+# CylancePROTECT
 #------------------------#
-colorOff='\033[0m'       # Text Reset
-
-# Regular Colors
-black='\033[0;30m'        # Black
-red='\033[0;31m'          # Red
-green='\033[0;32m'        # Green
-yellow='\033[0;33m'       # Yellow
-blue='\033[0;34m'         # Blue
-purple='\033[0;35m'       # Purple
-cyan='\033[0;36m'         # Cyan
-white='\033[0;37m'        # White
-
-# Bold
-boldBlack='\033[1;30m'       # Black
-boldRed='\033[1;31m'         # Red
-boldGreen='\033[1;32m'       # Green
-boldYellow='\033[1;33m'      # Yellow
-boldBlue='\033[1;34m'        # Blue
-boldPurple='\033[1;35m'      # Purple
-boldCyan='\033[1;36m'        # Cyan
-boldWhite='\033[1;37m'       # White
-
-# Underline
-underlineBlack='\033[4;30m'       # Black
-underlineRed='\033[4;31m'         # Red
-underlineGreen='\033[4;32m'       # Green
-underlineYellow='\033[4;33m'      # Yellow
-underlineBlue='\033[4;34m'        # Blue
-underlinePurple='\033[4;35m'      # Purple
-underlineCyan='\033[4;36m'        # Cyan
-underlineWhite='\033[4;37m'       # White
-
-# Background
-onBlack='\033[40m'       # Black
-onRed='\033[41m'         # Red
-onGreen='\033[42m'       # Green
-onYellow='\033[43m'      # Yellow
-onBlue='\033[44m'        # Blue
-onPurple='\033[45m'      # Purple
-onCyan='\033[46m'        # Cyan
-onWhite='\033[47m'       # White
-
-# High Intensity
-intensityBlack='\033[0;90m'       # Black
-intensityRed='\033[0;91m'         # Red
-intensityGreen='\033[0;92m'       # Green
-intensityYellow='\033[0;93m'      # Yellow
-intensityBlue='\033[0;94m'        # Blue
-intensityPurple='\033[0;95m'      # Purple
-intensityCyan='\033[0;96m'        # Cyan
-intensityWhite='\033[0;97m'       # White
-
-# Bold High Intensity
-boldIntensityBlack='\033[1;90m'      # Black
-boldIntensityRed='\033[1;91m'        # Red
-boldIntensityGreen='\033[1;92m'      # Green
-boldIntensityYellow='\033[1;93m'     # Yellow
-boldIntensityBlue='\033[1;94m'       # Blue
-boldIntensityPurple='\033[1;95m'     # Purple
-boldIntensityCyan='\033[1;96m'       # Cyan
-boldIntensityWhite='\033[1;97m'      # White
-
-# High Intensity backgrounds
-onIntensityBlack='\033[0;100m'   # Black
-onIntensityRed='\033[0;101m'     # Red
-onIntensityGreen='\033[0;102m'   # Green
-onIntensityYellow='\033[0;103m'  # Yellow
-onIntensityBlue='\033[0;104m'    # Blue
-onIntensityPurple='\033[0;105m'  # Purple
-onIntensityCyan='\033[0;106m'    # Cyan
-onIntensityWhite='\033[0;107m'   # White
+# DEAMONS
+cylanceSystemWideDeamonsArray=(
+    #"/Library/LaunchDaemons/*.plist" # root | * process | deamon | unloadable
+)
+# AGENTS
+cylancePerUserAgentsArray=(
+   # "/Library/LaunchAgents/*.plist" # user | *.app | agent | unloadable
+)

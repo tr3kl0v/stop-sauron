@@ -413,6 +413,91 @@ else
     writeLog "Can't locate the Zscaler Agent"
 fi
 
+#------------------------#
+# Cylance
+#------------------------#
+
+# TODO: Doesn't work, when plist's are not existing
+#
+# val3=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${cylanceSystemWideDeamonsArray[0]}")
+# if [[ $val3 == *"cylance"* ]]; then
+
+FILE=${cylanceSystemWideDeamonsArray[0]}
+if isFile $FILE; then
+
+    writeLog "You've got the Cylance Agent"
+
+    # Catch 1st ROOT process
+    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'cylance' | awk '{print $1}')
+
+    # enable
+    if [[ $ACTION == "enable" ]]; then
+
+        # Check if root process is a number
+        if isNumber; then
+            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
+        else
+            writeLog "Loading the Cylance Deamon(s)"
+            for t in ${cylanceSystemWideDeamonsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    /bin/launchctl $LOADER -w $t
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+        fi
+
+        # Check the USER processes from a root viewpoint
+        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'cylance'")
+        PROCESS=$(echo $var1 | awk '{print $1}')
+        # Check if process is a number
+        if isNumber; then
+            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
+        else
+            writeLog "Loading the Cylance Program(s)"
+            for t in ${cylanceAgentsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+        fi
+
+    # disable
+    else
+        # Check if root process is a number
+        if isNumber; then
+            writeLog "Unloading the Cylance Deamon(s)"
+            for t in ${cylanceSystemWideDeamonsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    /bin/launchctl $LOADER -w $t
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+
+            writeLog "Unloading the Cylance Program(s)"
+            for t in ${cylanceAgentsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+        else
+            writeLog "Root process is not running -- skipping"
+        fi
+    fi
+
+else
+    writeLog "Can't locate the Cylance Agent"
+fi
+
 # Teminating messages
 writeEcho "Finished."
 writeEcho "Please wait 30 seconds to let all Deamons finish the $LOADER!"
