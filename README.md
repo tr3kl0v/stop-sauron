@@ -5,14 +5,14 @@ To stop the all seeing eye of Sauron and make your MacBook operate as it should 
 This bash script has been created to harmless disable/enable software being pushed to your MacBooks by a Mobile Device Management (MDM) system.
 Unfortunate you still need to have `sudo` rights, but when that's the case you can easily on demand disable/enable the following software packages:
 
-1. WorkSpace One (WS1) (Airwatch)
+1. WorkSpace One (WS1) (AirWatch)
 2. FireEye XAGT agent(s)
 3. McAfee
 4. Zscaler
 
 ## Usage
 
-Use at your own risk, but know I'm using it quite often.
+Use at your own risk, but know I'm continuously using it on daily basis.
 
 Make the script executable:
 
@@ -36,7 +36,7 @@ Select you demanded action out of the options
 
 ## Compatibility
 
-Stop Sauron supports the software packages mentioned in the table below on OSX. The test column can have several states. The :white_check_mark: means :100:% tested on the complete software package and the :small_red_triangle_down: means tested, but not on all software packages options. For example McAfee has many options like a webfirewall, threat prevention, etc. The :heavy_check_mark: means that according to a variant of sources, e.g. documentation `$ man launchctl`, the functions should work, but is not yet tested. The :x: means it does not work.
+Stop Sauron supports the software packages mentioned in the table below on OSX. The test column can have several states. The :white_check_mark: means :100:% tested on the complete software package and the :small_red_triangle_down: means tested, but not on all software packages options. For example McAfee has many options like a web-firewall, threat prevention, etc. The :heavy_check_mark: means that according to a variant of sources, e.g. documentation `$ man launchctl`, the functions should work, but is not yet tested. The :x: means it does not work.
 
 | Packages | Version | Tested |
 | :--- | :--- | ---: |
@@ -50,12 +50,17 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | High Sierra (10.13 - 10.13.6) | :white_check_mark: |
 |  | Mojave (10.14 - 10.14.6) | :white_check_mark: |
 |  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
-|  | Big Sur (11.0.1 - 11.1) | :white_check_mark: |
-| WorkSpace 1 | 20.10 | :white_check_mark: |
+|  | Big Sur (11.0.1 - 11.3.1) | :white_check_mark: |
+|  | Monterey (12.0 - 12.4) | :white_check_mark: |
+| WorkSpace 1 | (20.10.0 - 22.01.0 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
-| McAfee | 10.7.5 (266) | :small_red_triangle_down: |
-| Zscaler | 2.1.2.38 | :small_red_triangle_down: |
+| McAfee Endpoint Security for Mac | 10.7.8 (186) | :small_red_triangle_down: |
+| McAfee Threat Prevention | 10.7.8 (128) | :white_check_mark: |
+| McAfee Firewall | 10.7.8 (115) | :white_check_mark: |
+| Zscaler | 2.1.2.38 | :white_check_mark: |
+| Cylance | 2.1.1594.518 - 3.0.1000.511 | :heavy_check_mark: |
 
+This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 
 ## Future plans
 
@@ -68,8 +73,13 @@ When you want to do development yourself have a look at the development [readme]
 
 ### Want to Help?
 
-Want to file a bug, contribute some code, or improve documentation? Excellent!
+Want to file a bug, contribute some code, or improve documentation? Excellent!  
+Please run stop-sauron with the `-x` flag and submit the generated `debug.log` always in your ticket.  
 Feel free to create an issue and submit all you think will help.
+
+### Appendix
+
+View [appendix](https://github.com/tr3kl0v/stop-sauron/blob/main/APPENDIX.md) for references and sources for ideas.
 
 ### Disclaimer
 

@@ -94,7 +94,7 @@ A USB flash drive or other secondary volume, formatted as Mac OS Extended, with 
 
 #### Use the 'createinstallmedia' command in Terminal
 
-* Connect the USB flash drive or other volume that you're using for the bootable installer. 
+* Connect the USB flash drive or other volume that you're using for the boot-able installer.
 * Open iTerm, which is in the Utilities folder of your Applications folder.
 * Type or paste one of the following commands in iTerm. These assume that the installer is in your `Applications` folder, and `MyVolume` is the name of the USB flash drive or other volume you're using. If it has a different name, replace `MyVolume` in these commands with the name of your volume.
 
@@ -142,7 +142,7 @@ After typing the command:
 1. Press Return to enter the command.
 2. When prompted, type your administrator password and press Return again. Terminal doesn't show any characters as you type your password.
 3. When prompted, type Y to confirm that you want to erase the volume, then press Return. Terminal shows the progress as the volume is erased.
-4. After the volume is erased, you may see an alert that Terminal would like to access files on a removable volume. Click OK to allow the copy to proceed. 
+4. After the volume is erased, you may see an alert that Terminal would like to access files on a removable volume. Click OK to allow the copy to proceed.
 5. When Terminal says that it's done, the volume will have the same name as the installer you downloaded, such as Install macOS Big Sur. You can now quit Terminal and eject the volume.
 
 #### Create the VMware image
@@ -157,6 +157,7 @@ Open VMware Fusion create a new VM.
 6. VMWare has detected the correct guest operating system as MacOs 10.15 in this example and provided specs for the VM. You just can continue with the creation by pressing "Finish".
 
 Your VM will now be created and it takes normally between 15 ~ 45 minutes to finish. After the installation of MacOs don't forget to install the VMware tools to ease the interaction between your host and guest system.
+
 ### Method 2 --  Create a bootable installer for macOS
 
 Method is two is slightly different because it is a workaround to get an older version of MacOS working.

@@ -10,36 +10,65 @@
 #------------------------#
 . configuration.sh
 . shared.sh
+. inspect.sh
 
-WriteLog "Hello '$SUDO_USER', as expected you're currently '$LOCAL_USER'!"
+
+#------------------------#
+# Check flags before doing anyhing else
+#------------------------#
+debugFlag='false'
+
+while getopts 'x' flag; do
+    case "${flag}" in
+        x) 
+            debugFlag='true' ;;
+        *) 
+            printGetOptsMenuUsage
+        exit 1 ;;
+    esac
+done
 
 #------------------------#
 # Check processes before menu
 #------------------------#
+prepare;
 
-# TODO New feat
+writeLog "[Session] - Start"
+writeLog "[User] - ID --> $SUDO_USER"
+writeLog "[User] - Mode --> $LOCAL_USER"
+
+# get greeting
+greeting;
+writeEcho "${greet} '$SUDO_USER'. What do you have in mind for Sauron's eye?"
 
 #------------------------#
 # Options menu
 #------------------------#
 PS3='Please enter your choice: '
-options=("Disable Sauron's eye" "Enable Sauron's eye" "Cancel")
+options=("Disable" "Enable" "Abort")
 select opt in "${options[@]}"; do
     case $opt in
-    "Disable Sauron's eye")
-        WriteLog "You have chosen to disable 'Sauron' and its minions!"
+    "Disable")
+        writeLog "[Select] - 1 --> Disable"
+        writeEcho "You have chosen to disable 'Sauron' and its minions!"
+        writeEcho "Processing..."
         ACTION="disable"
         LOADER="unload"
         break
         ;;
-    "Enable Sauron's eye")
-        WriteLog "You have chosen to enable 'Sauron' and its minions!"
+    "Enable")
+        writeLog "[Select] - 2 --> Enable"
+        writeEcho "You have chosen to enable 'Sauron' and its minions!"
+        writeEcho "Processing..."
         ACTION="enable"
         LOADER="load"
         break
         ;;
-    "Cancel")
-        WriteLog "Quiting .."
+    "Abort")
+        writeLog "[Select] - 3 --> Abort"
+        writeEcho "Bye!"
+        writeLog "[Session] - End"
+        writeLog "-------------------"
         exit
         break
         ;;
@@ -59,7 +88,7 @@ done
 FILE=${airwatchPerUserAgentsArray[0]}
 if isFile $FILE; then
 
-    WriteLog "You've got the Workspace ONE Agent"
+    writeLog "You've got the Workspace ONE Agent"
 
     # Catch 1st ROOT process
     PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'airwatch' | awk '{print $1}')
@@ -69,15 +98,15 @@ if isFile $FILE; then
 
         # Check if process is a number
         if isNumber; then
-            WriteLog "Root process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the Workspace ONE Deamon(s)"
+            writeLog "Loading the Workspace ONE Deamon(s)"
             for t in ${airwatchSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -87,9 +116,9 @@ if isFile $FILE; then
         PROCESS=$(echo $var1 | awk '{print $1}')
         # Check if process is a number
         if isNumber; then
-            WriteLog "User process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the Workspace ONE Program(s)"
+            writeLog "Loading the Workspace ONE Program(s)"
             for u in ${airwatchPerUserAgentsArray[@]}; do
                 su - $SUDO_USER -c "/bin/launchctl $LOADER -w $u"
             done
@@ -99,33 +128,33 @@ if isFile $FILE; then
     else
         # Check if root process is a number
         if isNumber; then
-            WriteLog "Unloading the Workspace ONE Deamon(s)"
+            writeLog "Unloading the Workspace ONE Deamon(s)"
 
             for t in ${airwatchSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
 
-            WriteLog "Unloading the Workspace ONE Program(s)"
+            writeLog "Unloading the Workspace ONE Program(s)"
             for t in ${airwatchPerUserAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         else
-            WriteLog "Root process is not running -- skipping"
+            writeLog "Root process is not running -- skipping"
         fi
     fi
 
 else
-    WriteLog "Can't locate the Workspace ONE Agent"
+    writeLog "Can't locate the Workspace ONE Agent"
 fi
 
 #------------------------#
@@ -140,7 +169,7 @@ fi
 FILE=${fireEyeSystemWideDeamonsArray[0]}
 if isFile $FILE; then
 
-    WriteLog "You've got the FireEye XAGT Agent"
+    writeLog "You've got the FireEye XAGT Agent"
 
     # Catch 1st ROOT process
     PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'xagt' | awk '{print $1}')
@@ -150,16 +179,16 @@ if isFile $FILE; then
 
         # Check if process is a number
         if isNumber; then
-            WriteLog "Root process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the FireEye XAGT Deamon(s)"
+            writeLog "Loading the FireEye XAGT Deamon(s)"
             # Loop through array of plists
             for t in ${fireEyeSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -169,15 +198,15 @@ if isFile $FILE; then
         PROCESS=$(echo $var1 | awk '{print $1}')
         # Check if process is a number
         if isNumber; then
-            WriteLog "User process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the FireEye XAGT Program(s)"
+            writeLog "Loading the FireEye XAGT Program(s)"
             for t in ${fireEyeAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -186,33 +215,33 @@ if isFile $FILE; then
     else
         # Check if root process is a number
         if isNumber; then
-            WriteLog "Unloading the FireEye XAGT Deamon(s)"
+            writeLog "Unloading the FireEye XAGT Deamon(s)"
             for t in ${fireEyeSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
 
-            WriteLog "Unloading the FireEye XAGT Program(s)"
+            writeLog "Unloading the FireEye XAGT Program(s)"
             for t in ${fireEyeAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         else
-            WriteLog "Root process is not running -- skipping"
+            writeLog "Root process is not running -- skipping"
         fi
     fi
 
 else
 
-    WriteLog "Can't locate the FireEye XAGT agent"
+    writeLog "Can't locate the FireEye XAGT agent"
 fi
 
 #------------------------#
@@ -227,7 +256,7 @@ fi
 FILE=${mcAfeeAgentsArray[0]}
 if isFile $FILE; then
 
-    WriteLog "You've got the McAfee Agent"
+    writeLog "You've got the McAfee Agent"
 
     # Catch 1st ROOT process
     PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'mcafee.agent.ma' | awk '{print $1}')
@@ -237,15 +266,15 @@ if isFile $FILE; then
 
         # Check if process is a number
         if isNumber; then
-            WriteLog "Root process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the McAfee Deamon(s)"
+            writeLog "Loading the McAfee Deamon(s)"
             for t in ${mcAfeeSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -255,15 +284,15 @@ if isFile $FILE; then
         PROCESS=$(echo $var1 | awk '{print $1}')
         # Check if process is a number
         if isNumber; then
-            WriteLog "User process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the McAfee Program(s)"
+            writeLog "Loading the McAfee Program(s)"
             for t in ${mcAfeeAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -272,31 +301,31 @@ if isFile $FILE; then
     else
         # Check if root process is a number
         if isNumber; then
-            WriteLog "Unloading the McAfee Deamon(s)"
+            writeLog "Unloading the McAfee Deamon(s)"
             for t in ${mcAfeeSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
-            WriteLog "Unloading the McAfee Program(s)"
+            writeLog "Unloading the McAfee Program(s)"
             for t in ${mcAfeeAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         else
-            WriteLog "Root process is not running -- skipping"
+            writeLog "Root process is not running -- skipping"
         fi
     fi
 
 else
-    WriteLog "Can't locate the McAfee agent"
+    writeLog "Can't locate the McAfee agent"
 fi
 
 #------------------------#
@@ -311,7 +340,7 @@ fi
 FILE=${zscalerSystemWideDeamonsArray[0]}
 if isFile $FILE; then
 
-    WriteLog "You've got the Zscaler Agent"
+    writeLog "You've got the Zscaler Agent"
 
     # Catch 1st ROOT process
     PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'zscaler' | awk '{print $1}')
@@ -321,15 +350,15 @@ if isFile $FILE; then
 
         # Check if root process is a number
         if isNumber; then
-            WriteLog "Root process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the Zscaler Deamon(s)"
+            writeLog "Loading the Zscaler Deamon(s)"
             for t in ${zscalerSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -339,15 +368,15 @@ if isFile $FILE; then
         PROCESS=$(echo $var1 | awk '{print $1}')
         # Check if process is a number
         if isNumber; then
-            WriteLog "User process ($PROCESS) already running -- skipping"
+            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
         else
-            WriteLog "Loading the Zscaler Program(s)"
+            writeLog "Loading the Zscaler Program(s)"
             for t in ${zscalerAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         fi
@@ -356,30 +385,122 @@ if isFile $FILE; then
     else
         # Check if root process is a number
         if isNumber; then
-            WriteLog "Unloading the Zscaler Deamon(s)"
+            writeLog "Unloading the Zscaler Deamon(s)"
             for t in ${zscalerSystemWideDeamonsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     /bin/launchctl $LOADER -w $t
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
 
-            WriteLog "Unloading the Zscaler Program(s)"
+            writeLog "Unloading the Zscaler Program(s)"
             for t in ${zscalerAgentsArray[@]}; do
                 # Check if plist exists
                 if isFile $t; then
                     su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
                 else
-                    WriteLog "File not found: $t"
+                    writeLog "File not found: $t"
                 fi
             done
         else
-            WriteLog "Root process is not running -- skipping"
+            writeLog "Root process is not running -- skipping"
         fi
     fi
 
 else
-    WriteLog "Can't locate the Zscaler Agent"
+    writeLog "Can't locate the Zscaler Agent"
 fi
+
+#------------------------#
+# Cylance
+#------------------------#
+
+# TODO: Doesn't work, when plist's are not existing
+#
+# val3=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${cylanceSystemWideDeamonsArray[0]}")
+# if [[ $val3 == *"cylance"* ]]; then
+
+FILE=${cylanceSystemWideDeamonsArray[0]}
+if isFile $FILE; then
+
+    writeLog "You've got the Cylance Agent"
+
+    # Catch 1st ROOT process
+    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'cylance' | awk '{print $1}')
+
+    # enable
+    if [[ $ACTION == "enable" ]]; then
+
+        # Check if root process is a number
+        if isNumber; then
+            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
+        else
+            writeLog "Loading the Cylance Deamon(s)"
+            for t in ${cylanceSystemWideDeamonsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    /bin/launchctl $LOADER -w $t
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+        fi
+
+        # Check the USER processes from a root viewpoint
+        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'cylance'")
+        PROCESS=$(echo $var1 | awk '{print $1}')
+        # Check if process is a number
+        if isNumber; then
+            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
+        else
+            writeLog "Loading the Cylance Program(s)"
+            for t in ${cylanceAgentsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+        fi
+
+    # disable
+    else
+        # Check if root process is a number
+        if isNumber; then
+            writeLog "Unloading the Cylance Deamon(s)"
+            for t in ${cylanceSystemWideDeamonsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    /bin/launchctl $LOADER -w $t
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+
+            writeLog "Unloading the Cylance Program(s)"
+            for t in ${cylanceAgentsArray[@]}; do
+                # Check if plist exists
+                if isFile $t; then
+                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
+                else
+                    writeLog "File not found: $t"
+                fi
+            done
+        else
+            writeLog "Root process is not running -- skipping"
+        fi
+    fi
+
+else
+    writeLog "Can't locate the Cylance Agent"
+fi
+
+# Teminating messages
+writeEcho "Finished."
+writeEcho "Please wait 30 seconds to let all Deamons finish the $LOADER!"
+writeEcho "Bye!"
+writeLog "[Session] - End"
+writeLog "-------------------"

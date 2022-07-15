@@ -1,17 +1,36 @@
-#!/bin/sh
+#!/boldIntensityn/sh
 
 # Users
 LOCAL_USER=$USER
 SUDO_USER=$SUDO_USER
 
-# PROCESS
-AIRWATCH_PROCESS="com.airwatch"
-FIRE_EYE_PROCESS="com.fireeye"
-MCAFEE_PROCESS="com.mcafee"
+#------------------------#
+# Logfile
+#------------------------#
+USER_LOG_FOLDER=".stop-sauron"
+USER_LOG_FILE="debug.log"
+
+#------------------------#
+# Plist paths
+#------------------------#
+plistPathArray=(
+#    "~/Library/LaunchAgents"         # Per-user agents provided by the user.
+    "/Library/LaunchAgents"          # Per-user agents provided by the administrator.
+    "/Library/LaunchDaemons"         # System wide daemons provided by the administrator.
+    "/System/Library/LaunchAgents"   # Mac OS X Per-user agents.
+    "/System/Library/LaunchDaemons"  # Mac OS X System wide daemons.
+)
 
 #------------------------#
 # Software packages
 #------------------------#
+applicationsArray=(
+    "com.airwatch"
+    "com.fireeye"
+    "com.mcafee"
+    "com.zscaler"
+)
+
 #------------------------#
 # VMWare Workspace one | Airwatch
 #------------------------#
@@ -42,23 +61,23 @@ fireEyeAgentsArray=(
 #------------------------#
 #  DEAMONS
 mcAfeeSystemWideDeamonsArray=(
-    "/Library/LaunchDaemons/com.mcafee.agent.ma.plist"        # root | McAfee/agent/bin/masvc | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.agent.macmn.plist"     # root | McAfee/agent/bin/macmnsv | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.agent.macompat.plist"  # root | McAfee/agent/bin/macompatsvc | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agent.ma.plist"        # root | McAfee/agent/boldIntensityn/masvc | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agent.macmn.plist"     # root | McAfee/agent/boldIntensityn/macmnsv | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agent.macompat.plist"  # root | McAfee/agent/boldIntensityn/macompatsvc | deamon | unloadable
     "/Library/LaunchDaemons/com.mcafee.ssm.Eupdate.plist"     # root | McAfee/AntiMalware/VShieldUpdate | deamon | unloadable
     "/Library/LaunchDaemons/com.mcafee.ssm.ScanFactory.plist" # root | McAfee/AntiMalware/VShieldScanner | deamon | unloadable
     "/Library/LaunchDaemons/com.mcafee.ssm.ScanManager.plist" # root | McAfee/AntiMalware/VShieldScanManager.app | deamon | unloadable
-    "/Library/LaunchDaemons/com.mcafee.virusscan.fmpd.plist"  # root | McAfee/fmp/bin64/fmpd | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.virusscan.fmpd.plist"  # root | McAfee/fmp/boldIntensityn64/fmpd | deamon | unloadable
 )
 
 # AGENTS
 mcAfeeAgentsArray=(
     "/Library/LaunchAgents/com.mcafee.menulet.plist"              # user | McAfee/MSS/Applications/Menulet.app | agent | unloadable
     "/Library/LaunchAgents/com.mcafee.reporter.plist"             # user | McAfee Reporter.app | agent | unloadable
-    "/Library/LaunchDaemons/com.mcafee.agentMonitor.helper.plist" # user | com.mcafee.agentMonitor.helper | deamon | unloadable
+    "/Library/LaunchDaemons/com.mcafee.agentMonIntensitytor.helper.plist" # user | com.mcafee.agentMonIntensitytor.helper | deamon | unloadable
 )
 
-# MCAFEE_UNINSTALL_SYSTEMEXTENSTION_PLIST="/Library/LaunchAgents/com.mcafee.uninstall.SystemExtension.plist" # root | McAfee deactivatesystemextension | agent | not unloadable
+# MCAFEE_UNINSTALL_SYSTEMEXTENSTIonPLIST="/Library/LaunchAgents/com.mcafee.uninstall.SystemExtension.plist" # root | McAfee deactivatesystemextension | agent | not unloadable
 # APPS
 # MCAFEE_VSCONTROL_APP=sudo /usr/local/McAfee/AntiMalware/VSControl stopoas
 # MCAFEE_VSCONTROL_APP= sudo /usr/local/McAfee/AntiMalware/VSControl stop
@@ -75,4 +94,16 @@ zscalerSystemWideDeamonsArray=(
 #  AGENTS
 zscalerAgentsArray=(
     "/Library/LaunchAgents/com.zscaler.tray.plist" # user | Zscsaler/tray | agent | unloadable
+)
+
+#------------------------#
+# CylancePROTECT
+#------------------------#
+# DEAMONS
+cylanceSystemWideDeamonsArray=(
+    #"/Library/LaunchDaemons/*.plist" # root | * process | deamon | unloadable
+)
+# AGENTS
+cylancePerUserAgentsArray=(
+   # "/Library/LaunchAgents/*.plist" # user | *.app | agent | unloadable
 )
