@@ -101,9 +101,10 @@ zscalerAgentsArray=(
 #------------------------#
 # DEAMONS
 cylanceSystemWideDeamonsArray=(
-    #"/Library/LaunchDaemons/*.plist" # root | * process | deamon | unloadable
-)
+    "/Library/LaunchDaemons/com.cylance.cylancees.plist" # root | Cylance Smart Antivirus (Smart AV) | deamon | unloadable
+    "/Library/LaunchDaemons/com.cylance.agent_service.plist" # root | Cylane/agent service | deamon | unloadable
+)   
 # AGENTS
 cylancePerUserAgentsArray=(
-   # "/Library/LaunchAgents/*.plist" # user | *.app | agent | unloadable
+    "/Library/LaunchAgents/com.cylancePROTECT.plist" # user | CylancePROTECT | agent | unloadable
 )
