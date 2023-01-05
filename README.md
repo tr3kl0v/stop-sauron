@@ -9,6 +9,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 2. FireEye XAGT agent(s)
 3. McAfee
 4. Zscaler
+5. CylancePROTECT
 
 ## Usage
 
@@ -51,14 +52,14 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | Mojave (10.14 - 10.14.6) | :white_check_mark: |
 |  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
 |  | Big Sur (11.0.1 - 11.3.1) | :white_check_mark: |
-|  | Monterey (12.0 - 12.4) | :white_check_mark: |
+|  | Monterey (12.0 - 12.6) | :white_check_mark: |
 | WorkSpace 1 | (20.10.0 - 22.01.0 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee Endpoint Security for Mac | 10.7.8 (186) | :small_red_triangle_down: |
 | McAfee Threat Prevention | 10.7.8 (128) | :white_check_mark: |
 | McAfee Firewall | 10.7.8 (115) | :white_check_mark: |
 | Zscaler | 2.1.2.38 | :white_check_mark: |
-| Cylance | 2.1.1594.518 - 3.0.1000.511 | :heavy_check_mark: |
+| Cylance | 2.1.1594.518 - 3.0.1000.511 | :white_check_mark: |
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 
