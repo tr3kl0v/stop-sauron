@@ -53,7 +53,7 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | Catalina (10.15 - 10.15.7) | :white_check_mark: |
 |  | Big Sur (11.0.1 - 11.3.1) | :white_check_mark: |
 |  | Monterey (12.0 - 12.6) | :white_check_mark: |
-   | Ventura (13.0 - 13.1) | :white_check_mark: |
+|  | Ventura (13.0 - 13.1) | :white_check_mark: |
 | WorkSpace 1 | (20.10.0 - 22.01.0 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee Endpoint Security for Mac | 10.7.8 (186) | :small_red_triangle_down: |
