@@ -10,6 +10,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 3. McAfee
 4. Zscaler
 5. CylancePROTECT
+6. CrowdStrike Falcon
 
 ## Usage
 
@@ -61,6 +62,7 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 | McAfee Firewall | 10.7.8 (115) | :white_check_mark: |
 | Zscaler | 2.1.2.38 | :white_check_mark: |
 | Cylance | 2.1.1594.518 - 3.0.1000.511 | :white_check_mark: |
+| Crowdstrike Falcon | ? - ? | :white_check_mark: |
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 
