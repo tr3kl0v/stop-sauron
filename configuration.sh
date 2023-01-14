@@ -29,6 +29,8 @@ applicationsArray=(
     "com.fireeye"
     "com.mcafee"
     "com.zscaler"
+    "com.cylance"
+    "com.crowdstrike"
 )
 
 #------------------------#
@@ -107,4 +109,17 @@ cylanceSystemWideDeamonsArray=(
 # AGENTS
 cylancePerUserAgentsArray=(
     "/Library/LaunchAgents/com.cylancePROTECT.plist" # user | CylancePROTECT | agent | unloadable
+)
+
+#------------------------#
+# Crowdstrike Falcon
+#------------------------#
+#  DEAMONS
+crowdstrikeFalconSystemWideDeamonsArray=(
+    "/Library/LaunchDaemons/com.crowdstrike.falcond.plist" # root | Crowdstrike Falcon | deamon | unloadable
+    "/Library/LaunchDaemons/com.crowdstrike.userdaemon.plist" # root | Crowdstrike User daemon | deamon | unloadable
+)
+# AGENTS
+crowdstrikeFalconPerUserAgentsArray=(
+   # "/Library/LaunchAgents/com.cylancePROTECT.plist" # user | CylancePROTECT | agent | unloadable
 )
