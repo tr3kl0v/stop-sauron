@@ -77,7 +77,7 @@ select opt in "${options[@]}"; do
     "Clean logfiles")
         writeLog "[Select] - 4 --> Clean logfiles"
         deleteLogfiles;
-        writeEcho "Cleaning log files. Processing..."
+        writeEcho "Cleaning log files..."
         writeEcho "Bye!"
         exit
         break
