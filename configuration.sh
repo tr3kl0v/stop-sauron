@@ -1,14 +1,22 @@
-#!/boldIntensityn/sh
+#!/bin/sh
+#------------------------#
+# Version
+#------------------------#
+VERSION="1.1.15.01.2023"
 
+
+#------------------------#
 # Users
+#------------------------#
 LOCAL_USER=$USER
 SUDO_USER=$SUDO_USER
 
 #------------------------#
-# Logfile
+# Logfiles
 #------------------------#
 USER_LOG_FOLDER=".stop-sauron"
 USER_LOG_FILE="debug.log"
+PLIST_PROCESS_BACKUP="plist-process.backup.log"
 
 #------------------------#
 # Plist paths

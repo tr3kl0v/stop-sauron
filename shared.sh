@@ -69,3 +69,11 @@ printGetOptsMenuUsage() {
 
 }
 
+#------------------------#
+# Check if folder exits
+#------------------------#
+deleteLogfiles() {
+    rm $USER_LOG_FILE
+    rm $PLIST_PROCESS_BACKUP
+}
+

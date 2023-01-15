@@ -10,7 +10,7 @@
 #------------------------#
 . configuration.sh
 . shared.sh
-. inspect.sh
+. init.sh
 
 
 #------------------------#
@@ -39,13 +39,15 @@ writeLog "[User] - Mode --> $LOCAL_USER"
 
 # get greeting
 greeting;
-writeEcho "${greet} '$SUDO_USER'. What do you have in mind for Sauron's eye?"
+writeEcho "Stop Sauron's eye version: ${VERSION}"
+writeEcho "${greet} '$SUDO_USER'. What do you have in mind for today?"
+ 
 
 #------------------------#
 # Options menu
 #------------------------#
 PS3='Please enter your choice: '
-options=("Disable" "Enable" "Abort")
+options=("Disable" "Enable" "Abort" "Clean logfiles")
 select opt in "${options[@]}"; do
     case $opt in
     "Disable")
@@ -72,9 +74,69 @@ select opt in "${options[@]}"; do
         exit
         break
         ;;
+    "Clean logfiles")
+        writeLog "[Select] - 4 --> Clean logfiles"
+        deleteLogfiles;
+        writeEcho "Cleaning log files. Processing..."
+        writeEcho "Bye!"
+        exit
+        break
+        ;;
     *) echo "invalid option $REPLY" ;;
     esac
 done
+
+
+
+#------------------------#
+# The execution
+#------------------------#
+
+theExecution() {
+    writeLog "[exec] - Start --> The execution"
+    writeLog "[exec] - Array check --> Plist Array --> size: ${#plistArray[@]}"
+    writeLog "[exec] - Array check --> Process Array --> size: ${#processArray[@]}"
+    
+    # enable
+    if [[ $ACTION == "enable" ]]; then
+        writeLog "[exec] - Enable"
+
+        for e in ${plistArray[@]}; do
+            # Check if plist exists
+            writeLog "[exec] --> $ACTION --> $e"
+
+            #    /bin/launchctl $LOADER -w $e
+        done
+    
+    # disable
+    else
+        writeLog "[exec] - Disable"
+
+        for e in ${plistArray[@]}; do
+            # Check if plist exists
+            writeLog "[exec] --> $ACTION --> $e"
+
+            #    /bin/launchctl $LOADER -w $e
+        done
+
+    fi
+
+    writeLog "[exec] - Resolved --> The execution"
+}
+
+#------------------------#
+# Start the Execution
+#------------------------#
+theExecution;
+
+
+
+#------------------------#
+# ||||| - Current handling below / The Execution ^ above
+# VVVVV
+#------------------------#
+
+
 
 #------------------------#
 # Handling AirWatch
