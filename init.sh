@@ -4,15 +4,14 @@
 # Search for deamons, plists and Installtion file on current systems
 #------------------------#
 prepare() {
-    writeLog "-------------------"
-    writeLog "[Prepare] - Start"
 
     if [[ "$debugFlag" == "true" ]]; then
         createLogFile;
     fi
+    createBackupFile;
     findFiles;
     findProcesses;
-
+    
     writeLog "[Prepare] - Stop"
 }
 
@@ -41,7 +40,34 @@ createLogFile() {
 
 
         # Create new logfile
-        echo "$(date) --- [Logfile] - created" > $USER_LOG_FILE
+        echo "$(date) - [Logfile] -> created" > $USER_LOG_FILE
+
+      #fi
+
+    fi
+
+    writeLog "-------------------"
+    writeLog "[Prepare] - Start"
+
+}
+
+createBackupFile() {
+    # Check if backup exits on system
+    if [ -f $PLIST_PROCESS_BACKUP ]; then
+        writeLog "[Backup file] - File found"
+    else        
+        writeEcho "[Backup file] - File not found!"
+        writeEcho "[Backup file] - Creating logFile"
+
+        #if isFolder $logLocation; then
+        #    writeLog "log folder found"
+        #else 
+        #    writeLog "log folder not found"
+        #    mkdir -p $logLocation;
+
+
+        # Create new logfile
+        echo "$(date) - [Backup file] -> created" > $PLIST_PROCESS_BACKUP
 
       #fi
 
