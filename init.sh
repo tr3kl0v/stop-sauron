@@ -5,12 +5,22 @@
 #------------------------#
 prepare() {
 
+    # set default variables
+    LogfileExists="false"
+    debugfileExists="false"
+
     if [[ "$debugFlag" == "true" ]]; then
         createLogFile;
     fi
+
     createBackupFiles;
-    findFiles;
-    findProcesses;
+
+    if [[ "$debugfileExists" == "false" ]]; then
+        findFiles;
+        findProcesses;
+    else
+        writeLog "[Prepare] Skipping -> [PS] & [files] steps"
+    fi
     
     writeLog "[Prepare] - Stop"
 }
@@ -27,6 +37,8 @@ createLogFile() {
 
     # Check if logfile exits on system
     if [ -f $USER_LOG_FILE ]; then
+        LogfileExists="true"
+        writeLog "-------------------"
         writeLog "[Log file] - Logfile located"
     else        
         writeEcho "[Log file] - I couldn 't locate the logfile"
@@ -40,13 +52,13 @@ createLogFile() {
 
 
         # Create new logfile
-        echo "$(date) - [Logfile] -> created" > $USER_LOG_FILE
+        echo  "$(date) - -------------------" > $USER_LOG_FILE
+        writeLog "[Logfile] -> created"
 
       #fi
 
     fi
 
-    writeLog "-------------------"
     writeLog "[Prepare] - Start"
 
 }
@@ -54,6 +66,7 @@ createLogFile() {
 createBackupFiles() {
     # Check if Deamon backup exits on system
     if [ -f $PLIST_DEAMON_BACKUP ] && [ -f $PLIST_AGENT_BACKUP ]; then
+        debugfileExists="true"
         writeLog "[Backup file] - Deamon- & Agent backup files located"
     else        
         writeEcho "[Backup file] - I couldn 't locate the Deamon- & Agent backup files"
@@ -103,26 +116,11 @@ findProcesses() {
             DEAMON_TYPE="Agent"
             var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
             PROCESS=$(echo $var1 | awk '{print $1}')
-
-            # su - $SUDO_USER -c "/bin/launchctl list $filename"
             
         else
             # Get Deamon PID
             DEAMON_TYPE="Deamon"
             PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
-
-            # /bin/launchctl list $filename
-#
-            # find plist files in folder defined and add them to array
-            # find $v -name "${t}*" -print0 >tmpfile
-            # while IFS=  read -r -d $'\0'; do
-
-            # plistArray+=("$REPLY")
-            # writeLog "[Plist] - $t --> found --> $REPLY"
-                           
-            # done <tmpfile
-            # rm -f tmpfile
-#
         fi
                 
         # Check if process is a number
