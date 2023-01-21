@@ -92,33 +92,115 @@ done
 #------------------------#
 # The execution
 #------------------------#
-
 theExecution() {
     writeLog "[exec] - Start --> The execution"
-    writeLog "[exec] - Array check --> Plist Array --> size: ${#plistArray[@]}"
-    writeLog "[exec] - Array check --> Process Array --> size: ${#processArray[@]}"
+
+    arrayAgentsfromBackup=()
+    arrayDeamonsfromBackup=()
+    COUNTER=0
+
+    # get Agents from backup file
+    while IFS= read -r line; do
+        if [[ $COUNTER > 0 ]]; then
+            arrayAgentsfromBackup+=("$line");
+        fi
+        let COUNTER++
+    done <$PLIST_AGENT_BACKUP
     
+    writeLog "[exec] - Array check --> Plist Agent Array from backup file --> size: ${#arrayAgentsfromBackup[@]}"
+
+    # reset counter
+    COUNTER=0
+    # get Deamons from backup file
+    while IFS= read -r line; do
+        if [[ $COUNTER > 0 ]]; then
+            arrayDeamonsfromBackup+=("$line");
+        fi
+        let COUNTER++
+    done <$PLIST_DEAMON_BACKUP
+    
+    writeLog "[exec] - Array check --> Plist Deamons Array from backup file --> size: ${#arrayDeamonsfromBackup[@]}"
+
     # enable
     if [[ $ACTION == "enable" ]]; then
-        writeLog "[exec] - Enable"
+        writeLog "[exec] - $ACTION"
 
-        for e in ${plistArray[@]}; do
-            # Check if plist exists
-            writeLog "[exec] --> $ACTION --> $e"
+        writeLog "[exec] - Start --> $ACTION Deamons"
+        for e in ${arrayDeamonsfromBackup[@]}; do
+            # Check if deamons are already running
+            # Get path
+            dirname="${e%/*}"
 
-            #    /bin/launchctl $LOADER -w $e
+            # Get last folder
+            basename="${dirname##*/}"
+
+            # Strip path from filename
+            filename="$(basename -- $e)"
+            
+            # Get filename without extension
+            filename="${filename%.*}"
+
+            # Get deamon PID
+            PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
+                
+            # Check if process is a number
+            if isNumber; then
+                writeLog "[exex] - $e --> already running  --> $PROCESS --> skip"
+            else
+                # take action
+                writeLog "[exec] --> $ACTION --> $e"
+                /bin/launchctl $LOADER -w $e
+            fi
         done
-    
+        writeLog "[exec] - Resolved --> $ACTION Deamons"
+
+        writeLog "[exec] - Start --> $ACTION Agents"
+        for d in ${arrayAgentsfromBackup[@]}; do
+            # Check if agents are already running
+            # Get path
+            dirname="${d%/*}"
+
+            # Get last folder
+            basename="${dirname##*/}"
+
+            # Strip path from filename
+            filename="$(basename -- $d)"
+            
+            # Get filename without extension
+            filename="${filename%.*}"
+
+            # Get agent PID
+            var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
+            PROCESS=$(echo $var1 | awk '{print $1}')
+                
+            # Check if process is a number
+            if isNumber; then
+                writeLog "[exex] - $d --> already running  --> $PROCESS --> skip"
+            else
+                # take action
+                writeLog "[exec] --> $ACTION --> $d"
+                su - $SUDO_USER -c "/bin/launchctl $LOADER -w $d"
+            fi
+        done
+        writeLog "[exec] - Resolved --> $ACTION Agents"
+
     # disable
     else
         writeLog "[exec] - Disable"
 
-        for e in ${plistArray[@]}; do
-            # Check if plist exists
-            writeLog "[exec] --> $ACTION --> $e"
-
-            #    /bin/launchctl $LOADER -w $e
+        writeLog "[exec] - Start --> $ACTION Deamons"
+        for g in ${arrayDeamonsfromBackup[@]}; do
+            writeLog "[exec] --> $ACTION --> $g"
+            /bin/launchctl $LOADER -w $g
         done
+        writeLog "[exec] - Resolved --> $ACTION Deamons"
+
+        writeLog "[exec] - Start --> $ACTION Agents"
+        for h in ${arrayAgentsfromBackup[@]}; do
+            writeLog "[exec] --> $ACTION --> $h"
+            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $h"
+        done
+        writeLog "[exec] - Resolved --> $ACTION Agents"
 
     fi
 
@@ -133,522 +215,10 @@ theExecution;
 
 
 #------------------------#
-# ||||| - Current handling below / The Execution ^ above
-# VVVVV
-#------------------------#
-
-
-
-#------------------------#
-# Handling AirWatch
-#------------------------#
-
-# TODO: Doesn't work, when plist's are not existing
-#
-# val=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${airwatchPerUserAgentsArray[0]}")
-# if [[ $val == *"Workspace ONE Intelligent Hub"* ]]; then
-
-FILE=${airwatchPerUserAgentsArray[0]}
-if isFile $FILE; then
-
-    writeLog "You've got the Workspace ONE Agent"
-
-    # Catch 1st ROOT process
-    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'airwatch' | awk '{print $1}')
-
-    # enable
-    if [[ $ACTION == "enable" ]]; then
-
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Workspace ONE Deamon(s)"
-            for t in ${airwatchSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-        # Check the USER processes from a root viewpoint
-        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'airwatch'")
-        PROCESS=$(echo $var1 | awk '{print $1}')
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Workspace ONE Program(s)"
-            for u in ${airwatchPerUserAgentsArray[@]}; do
-                su - $SUDO_USER -c "/bin/launchctl $LOADER -w $u"
-            done
-        fi
-
-    # disable
-    else
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "Unloading the Workspace ONE Deamon(s)"
-
-            for t in ${airwatchSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-
-            writeLog "Unloading the Workspace ONE Program(s)"
-            for t in ${airwatchPerUserAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        else
-            writeLog "Root process is not running -- skipping"
-        fi
-    fi
-
-else
-    writeLog "Can't locate the Workspace ONE Agent"
-fi
-
-#------------------------#
-# FireEye
-#------------------------#
-
-# TODO: Doesn't work, when plist's are not existing
-#
-# val1=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${fireEyeSystemWideDeamonsArray[0]}")
-# if [[ $val1 == *"xagt"* ]]; then
-
-FILE=${fireEyeSystemWideDeamonsArray[0]}
-if isFile $FILE; then
-
-    writeLog "You've got the FireEye XAGT Agent"
-
-    # Catch 1st ROOT process
-    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'xagt' | awk '{print $1}')
-
-    # enable
-    if [[ $ACTION == "enable" ]]; then
-
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the FireEye XAGT Deamon(s)"
-            # Loop through array of plists
-            for t in ${fireEyeSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-        # Check the USER processes from a root viewpoint
-        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'xagt'")
-        PROCESS=$(echo $var1 | awk '{print $1}')
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the FireEye XAGT Program(s)"
-            for t in ${fireEyeAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-    # disable
-    else
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "Unloading the FireEye XAGT Deamon(s)"
-            for t in ${fireEyeSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-
-            writeLog "Unloading the FireEye XAGT Program(s)"
-            for t in ${fireEyeAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        else
-            writeLog "Root process is not running -- skipping"
-        fi
-    fi
-
-else
-
-    writeLog "Can't locate the FireEye XAGT agent"
-fi
-
-#------------------------#
-# McAfee
-#------------------------#
-
-# TODO: Doesn't work, when plist's are not existing
-#
-# val2=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${mcAfeeAgentsArray[0]}")
-# if [[ $val2 == *"McAfee"* ]]; then
-
-FILE=${mcAfeeAgentsArray[0]}
-if isFile $FILE; then
-
-    writeLog "You've got the McAfee Agent"
-
-    # Catch 1st ROOT process
-    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'mcafee.agent.ma' | awk '{print $1}')
-
-    # enable
-    if [[ $ACTION == "enable" ]]; then
-
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the McAfee Deamon(s)"
-            for t in ${mcAfeeSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-        # Check the USER processes from a root viewpoint
-        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'mcafee.reporter'")
-        PROCESS=$(echo $var1 | awk '{print $1}')
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the McAfee Program(s)"
-            for t in ${mcAfeeAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-    # disable
-    else
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "Unloading the McAfee Deamon(s)"
-            for t in ${mcAfeeSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-            writeLog "Unloading the McAfee Program(s)"
-            for t in ${mcAfeeAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        else
-            writeLog "Root process is not running -- skipping"
-        fi
-    fi
-
-else
-    writeLog "Can't locate the McAfee agent"
-fi
-
-#------------------------#
-# Zscaler
-#------------------------#
-
-# TODO: Doesn't work, when plist's are not existing
-#
-# val3=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${zscalerSystemWideDeamonsArray[0]}")
-# if [[ $val3 == *"zscaler"* ]]; then
-
-FILE=${zscalerSystemWideDeamonsArray[0]}
-if isFile $FILE; then
-
-    writeLog "You've got the Zscaler Agent"
-
-    # Catch 1st ROOT process
-    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'zscaler' | awk '{print $1}')
-
-    # enable
-    if [[ $ACTION == "enable" ]]; then
-
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Zscaler Deamon(s)"
-            for t in ${zscalerSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-        # Check the USER processes from a root viewpoint
-        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'zscaler'")
-        PROCESS=$(echo $var1 | awk '{print $1}')
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Zscaler Program(s)"
-            for t in ${zscalerAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-    # disable
-    else
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "Unloading the Zscaler Deamon(s)"
-            for t in ${zscalerSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-
-            writeLog "Unloading the Zscaler Program(s)"
-            for t in ${zscalerAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        else
-            writeLog "Root process is not running -- skipping"
-        fi
-    fi
-
-else
-    writeLog "Can't locate the Zscaler Agent"
-fi
-
-#------------------------#
-# Cylance
-#------------------------#
-
-# TODO: Doesn't work, when plist's are not existing
-#
-# val3=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${cylanceSystemWideDeamonsArray[0]}")
-# if [[ $val3 == *"cylance"* ]]; then
-
-FILE=${cylanceSystemWideDeamonsArray[0]}
-if isFile $FILE; then
-
-    writeLog "You've got the Cylance Agent"
-
-    # Catch 1st ROOT process
-    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'cylance' | awk '{print $1}')
-
-    # enable
-    if [[ $ACTION == "enable" ]]; then
-
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Cylance Deamon(s)"
-            for t in ${cylanceSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-        # Check the USER processes from a root viewpoint
-        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'cylance'")
-        PROCESS=$(echo $var1 | awk '{print $1}')
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Cylance Program(s)"
-            for t in ${cylanceAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-    # disable
-    else
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "Unloading the Cylance Deamon(s)"
-            for t in ${cylanceSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-
-            writeLog "Unloading the Cylance Program(s)"
-            for t in ${cylanceAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        else
-            writeLog "Root process is not running -- skipping"
-        fi
-    fi
-
-else
-    writeLog "Can't locate the Cylance Agent"
-fi
-
-#------------------------#
-# CrowdStrike Falcon
-#------------------------#
-
-# TODO: Doesn't work, when plist's are not existing
-#
-# val3=$(/usr/libexec/PlistBuddy -c "Print ProgramArguments:0" "${crowdstrikeFalconSystemWideDeamonsArray[0]}")
-# if [[ $val3 == *"falcond"* ]]; then
-
-FILE=${crowdstrikeFalconSystemWideDeamonsArray[0]}
-if isFile $FILE; then
-
-    writeLog "You've got the CrowdStrike Falcon"
-
-    # Catch 1st ROOT process
-    PROCESS=$(ps -Ac | /bin/launchctl list | grep -m1 'falcon' | awk '{print $1}')
-
-    # enable
-    if [[ $ACTION == "enable" ]]; then
-
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "[Process] - Root --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Falcon Deamon(s)"
-            for t in ${crowdstrikeFalconSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-        # Check the USER processes from a root viewpoint
-        var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 'falcon'")
-        PROCESS=$(echo $var1 | awk '{print $1}')
-        # Check if process is a number
-        if isNumber; then
-            writeLog "[Process] - User --> $PROCESS --> already running --> skip"
-        else
-            writeLog "Loading the Falcon Program(s)"
-            for t in ${crowdstrikeFalconUserAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        fi
-
-    # disable
-    else
-        # Check if root process is a number
-        if isNumber; then
-            writeLog "Unloading the Falcon Deamon(s)"
-            for t in ${crowdstrikeFalconSystemWideDeamonsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    /bin/launchctl $LOADER -w $t
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-
-            writeLog "Unloading the Falcon Program(s)"
-            for t in ${crowdstrikeFalconUserAgentsArray[@]}; do
-                # Check if plist exists
-                if isFile $t; then
-                    su - $SUDO_USER -c "/bin/launchctl $LOADER -w $t"
-                else
-                    writeLog "File not found: $t"
-                fi
-            done
-        else
-            writeLog "Root process is not running -- skipping"
-        fi
-    fi
-
-else
-    writeLog "Can't locate the CrowdStrike Falcon"
-fi
-
 # Teminating messages
+#------------------------#
 writeEcho "Finished."
-writeEcho "Please wait 30 seconds to let all Deamons finish the $LOADER!"
+writeEcho "Please wait 30 seconds to let all Agents & Deamons finish the $LOADER!"
 writeEcho "Bye!"
 writeLog "[Session] - End"
 writeLog "-------------------"
