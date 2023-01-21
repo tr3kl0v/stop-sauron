@@ -8,7 +8,7 @@ prepare() {
     if [[ "$debugFlag" == "true" ]]; then
         createLogFile;
     fi
-    createBackupFile;
+    createBackupFiles;
     findFiles;
     findProcesses;
     
@@ -27,10 +27,10 @@ createLogFile() {
 
     # Check if logfile exits on system
     if [ -f $USER_LOG_FILE ]; then
-        writeLog "[Logfile] - File found"
+        writeLog "[Log file] - Logfile located"
     else        
-        writeEcho "[Logfile] - File not found!"
-        writeEcho "[Logfile] - Creating logFile"
+        writeEcho "[Log file] - I couldn 't locate the logfile"
+        writeEcho "[Log file] - Created the logfile"
 
         #if isFolder $logLocation; then
         #    writeLog "log folder found"
@@ -51,13 +51,12 @@ createLogFile() {
 
 }
 
-createBackupFile() {
-    # Check if backup exits on system
-    if [ -f $PLIST_PROCESS_BACKUP ]; then
-        writeLog "[Backup file] - File found"
+createBackupFiles() {
+    # Check if Deamon backup exits on system
+    if [ -f $PLIST_DEAMON_BACKUP ] && [ -f $PLIST_AGENT_BACKUP ]; then
+        writeLog "[Backup file] - Deamon- & Agent backup files located"
     else        
-        writeEcho "[Backup file] - File not found!"
-        writeEcho "[Backup file] - Creating logFile"
+        writeEcho "[Backup file] - I couldn 't locate the Deamon- & Agent backup files"
 
         #if isFolder $logLocation; then
         #    writeLog "log folder found"
@@ -66,11 +65,14 @@ createBackupFile() {
         #    mkdir -p $logLocation;
 
 
-        # Create new logfile
-        echo "$(date) - [Backup file] -> created" > $PLIST_PROCESS_BACKUP
+        # Create new empty logfiles
+        /bin/echo $(date) > $PLIST_DEAMON_BACKUP
+        writeLog "[Backup file] - Deamon -> created"
+        /bin/echo $(date) > $PLIST_AGENT_BACKUP
+        writeLog "[Backup file] - Agent -> created"
 
+        writeEcho "[Backup file] - Created the Deamon- & Agent backup files"
       #fi
-
     fi
 }
 
@@ -82,6 +84,7 @@ findProcesses() {
 
     writeLog "[Plist] - find Deamon process"
     for i in ${plistArray[@]}; do
+        DEAMON_TYPE=""
 
         # Get path
         dirname="${i%/*}"
@@ -97,6 +100,7 @@ findProcesses() {
 
         if [[ "$basename" == "LaunchAgents" ]]; then
             # Check the USER processes from a root viewpoint
+            DEAMON_TYPE="Agent"
             var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
             PROCESS=$(echo $var1 | awk '{print $1}')
 
@@ -104,6 +108,7 @@ findProcesses() {
             
         else
             # Get Deamon PID
+            DEAMON_TYPE="Deamon"
             PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
 
             # /bin/launchctl list $filename
@@ -123,6 +128,11 @@ findProcesses() {
         # Check if process is a number
         if isNumber; then
             processArray+=("$PROCESS")
+            if [[ "$DEAMON_TYPE" == "Agent" ]]; then 
+                /bin/echo $i >> $PLIST_AGENT_BACKUP
+            else
+                /bin/echo $i >> $PLIST_DEAMON_BACKUP
+            fi
         else
             processArray+=("0")
         fi

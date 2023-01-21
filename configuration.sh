@@ -2,7 +2,7 @@
 #------------------------#
 # Version
 #------------------------#
-VERSION="1.1.15.01.2023"
+VERSION="1.1.21.01.2023"
 
 
 #------------------------#
@@ -16,7 +16,8 @@ SUDO_USER=$SUDO_USER
 #------------------------#
 USER_LOG_FOLDER=".stop-sauron"
 USER_LOG_FILE="debug.log"
-PLIST_PROCESS_BACKUP="plist-process.backup.log"
+PLIST_DEAMON_BACKUP="plist-deamon.backup.log"
+PLIST_AGENT_BACKUP="plist-agent.backup.log"
 
 #------------------------#
 # Plist paths
