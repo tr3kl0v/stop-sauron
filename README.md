@@ -14,7 +14,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 
 ## Usage
 
-Use at your own risk, but know I'm continuously using it on daily basis.
+Use at your own risk, but know I'm continuously using it on daily basis. I dying this great power ;-)
 
 Make the script executable:
 

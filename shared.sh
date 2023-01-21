@@ -73,7 +73,18 @@ printGetOptsMenuUsage() {
 # Check if folder exits
 #------------------------#
 deleteLogfiles() {
-    rm $USER_LOG_FILE
-    rm $PLIST_PROCESS_BACKUP
+
+    if [ -f $USER_LOG_FILE ]; then
+        rm $USER_LOG_FILE
+    fi
+
+    if [ -f $PLIST_DEAMON_BACKUP ]; then
+        rm $PLIST_DEAMON_BACKUP
+    fi
+    
+    if [ -f $PLIST_AGENT_BACKUP ]; then
+        rm $PLIST_AGENT_BACKUP
+    fi
+    
 }
 
