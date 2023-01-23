@@ -32,7 +32,7 @@ sudo ./stop-sauron.sh
 
 Select you demanded action out of the options
 
-* Option 1: Stop Sauron's eye" (for disabling)
+* Option 1: Stop Sauron's eye (for disabling)
 * Option 2: Start Sauron's eye (for enabling)
 * Option 3: Clean the logs (Clean the debug logfiles create with the -x flag)
 * Option 4: Remove the config (Removing the original configuration files, create on the first run)
@@ -66,7 +66,7 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 | McAfee Firewall | 10.7.8 (115) | :white_check_mark: |
 | Zscaler | 2.1.2.38 | :white_check_mark: |
 | Cylance | 2.1.1594.518 - 3.0.1000.511 | :white_check_mark: |
-| Crowdstrike Falcon | ? - ? | :white_check_mark: |
+| Crowdstrike Falcon | ? - ? | :heavy_check_mark:|
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 
