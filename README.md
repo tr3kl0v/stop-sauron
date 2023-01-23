@@ -32,9 +32,13 @@ sudo ./stop-sauron.sh
 
 Select you demanded action out of the options
 
-* Option 1: for disabling
-* Option 2: for enabling
-* Option 3: cancel & quit
+* Option 1: Stop Sauron's eye" (for disabling)
+* Option 2: Start Sauron's eye (for enabling)
+* Option 3: Clean the logs (Clean the debug logfiles create with the -x flag)
+* Option 4: Remove the config (Removing the original configuration files, create on the first run)
+* Option 5: Create lifesaver (Creating a backupfile of the configuration files)
+* Option 6: Exit (without any actions)
+
 
 ## Compatibility
 
