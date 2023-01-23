@@ -74,17 +74,61 @@ printGetOptsMenuUsage() {
 #------------------------#
 deleteLogfiles() {
 
+    # logfile
     if [ -f $USER_LOG_FILE ]; then
         rm $USER_LOG_FILE
-    fi
-
-    if [ -f $PLIST_DEAMON_BACKUP ]; then
-        rm $PLIST_DEAMON_BACKUP
-    fi
-    
-    if [ -f $PLIST_AGENT_BACKUP ]; then
-        rm $PLIST_AGENT_BACKUP
     fi
     
 }
 
+#------------------------#
+# Create backup
+#------------------------#
+createBackupfiles() {
+    writeLog "[Backup] - Start --> Creating backup configuration files"
+
+    if [ -f $PLIST_DEAMON_CONF ]; then
+        writeLog "[Backup] - found --> $PLIST_DEAMON_CONF"
+        if [ -f $PLIST_DEAMON_BACKUP ]; then
+            writeLog "[Backup] - found --> $PLIST_DEAMON_BACKUP --> skipping backup"
+            writeEcho "[Backup] - found --> $PLIST_DEAMON_BACKUP --> skipping backup. Please remove this previous backup file manually"
+        else
+            cp $PLIST_DEAMON_CONF $PLIST_DEAMON_BACKUP
+            writeLog "[Backup] - created --> $PLIST_DEAMON_BACKUP"
+        fi
+    fi
+    
+    if [ -f $PLIST_AGENT_CONF ]; then
+        writeLog "[Backup] - found --> $PLIST_AGENT_CONF"
+        if [ -f $PLIST_AGENT_BACKUP ]; then
+            writeLog "[Backup] - found --> $PLIST_AGENT_BACKUP --> skipping backup"
+            writeEcho "[Backup] - found --> $PLIST_AGENT_BACKUP --> skipping backup. Please remove this previous backup file manually"
+        else
+            cp $PLIST_AGENT_CONF $PLIST_AGENT_BACKUP
+            writeLog "[Backup] - created --> $PLIST_AGENT_BACKUP"
+        fi
+    fi
+    writeLog "[Backup] - Resolved --> Creating backup configuration files"
+    
+}
+
+#------------------------#
+# Remove configuration
+#------------------------#
+removeConfigfiles() {
+
+    # Config
+    if [ -f $PLIST_DEAMON_CONF ]; then
+        writeLog "[Reset Conf] - Found --> $PLIST_DEAMON_CONF"
+        rm $PLIST_DEAMON_CONF
+        writeLog "[Reset Conf] - Removed --> $PLIST_DEAMON_CONF"
+    fi
+    
+    if [ -f $PLIST_AGENT_CONF ]; then
+        writeLog "[Reset Conf] - Found --> $PLIST_AGENT_CONF"
+        rm $PLIST_AGENT_CONF
+        writeLog "[Reset Conf] - Removed --> $PLIST_AGENT_CONF"
+    fi
+
+    
+}

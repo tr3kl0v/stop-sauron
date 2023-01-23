@@ -7,15 +7,15 @@ prepare() {
 
     # set default variables
     LogfileExists="false"
-    debugfileExists="false"
+    configFileExists="false"
 
     if [[ "$debugFlag" == "true" ]]; then
         createLogFile;
     fi
 
-    createBackupFiles;
+    createConfigFiles;
 
-    if [[ "$debugfileExists" == "false" ]]; then
+    if [[ "$configFileExists" == "false" ]]; then
         findFiles;
         findProcesses;
     else
@@ -63,28 +63,21 @@ createLogFile() {
 
 }
 
-createBackupFiles() {
-    # Check if Deamon backup exits on system
-    if [ -f $PLIST_DEAMON_BACKUP ] && [ -f $PLIST_AGENT_BACKUP ]; then
-        debugfileExists="true"
-        writeLog "[Backup file] - Deamon- & Agent backup files located"
+createConfigFiles() {
+    # Check if Deamon Conf exits on system
+    if [ -f $PLIST_DEAMON_CONF ] && [ -f $PLIST_AGENT_CONF ]; then
+        configFileExists="true"
+        writeLog "[Config file] - Deamon- & Agent configuration files located"
     else        
-        writeEcho "[Backup file] - I couldn 't locate the Deamon- & Agent backup files"
-
-        #if isFolder $logLocation; then
-        #    writeLog "log folder found"
-        #else 
-        #    writeLog "log folder not found"
-        #    mkdir -p $logLocation;
-
+        writeEcho "[Config file] - I couldn 't locate the Deamon- & Agent configuration files"
 
         # Create new empty logfiles
-        /bin/echo $(date) > $PLIST_DEAMON_BACKUP
-        writeLog "[Backup file] - Deamon -> created"
-        /bin/echo $(date) > $PLIST_AGENT_BACKUP
-        writeLog "[Backup file] - Agent -> created"
+        /bin/echo $(date) > $PLIST_DEAMON_CONF
+        writeLog "[Config file] - Deamon -> created"
+        /bin/echo $(date) > $PLIST_AGENT_CONF
+        writeLog "[Config file] - Agent -> created"
 
-        writeEcho "[Backup file] - Created the Deamon- & Agent backup files"
+        writeEcho "[Config file] - Created the Deamon- & Agent configuration files"
       #fi
     fi
 }
@@ -127,9 +120,9 @@ findProcesses() {
         if isNumber; then
             processArray+=("$PROCESS")
             if [[ "$DEAMON_TYPE" == "Agent" ]]; then 
-                /bin/echo $i >> $PLIST_AGENT_BACKUP
+                /bin/echo $i >> $PLIST_AGENT_CONF
             else
-                /bin/echo $i >> $PLIST_DEAMON_BACKUP
+                /bin/echo $i >> $PLIST_DEAMON_CONF
             fi
         else
             processArray+=("0")
