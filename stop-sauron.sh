@@ -37,20 +37,25 @@ writeLog "[Session] - Start"
 writeLog "[User] - ID --> $SUDO_USER"
 writeLog "[User] - Mode --> $LOCAL_USER"
 
-# get greeting
+#------------------------#
+# Greetings
+#------------------------#
 greeting;
+
 writeEcho "Stop Sauron's eye version: ${VERSION}"
 writeEcho "${greet} '$SUDO_USER'. What do you have in mind for today?"
+echo ""
  
 
 #------------------------#
 # Options menu
 #------------------------#
 PS3='Please enter your choice: '
-options=("Disable" "Enable" "Abort" "Clean logfiles")
+options=("Stop Sauron's eye" "Start Sauron's eye" "Clean the logs" "Remove the config" "Create lifesaver" "Exit")
+COLUMNS=20
 select opt in "${options[@]}"; do
     case $opt in
-    "Disable")
+    "Stop Sauron's eye")
         writeLog "[Select] - 1 --> Disable"
         writeEcho "You have chosen to disable 'Sauron' and its minions!"
         writeEcho "Processing..."
@@ -58,7 +63,7 @@ select opt in "${options[@]}"; do
         LOADER="unload"
         break
         ;;
-    "Enable")
+    "Start Sauron's eye")
         writeLog "[Select] - 2 --> Enable"
         writeEcho "You have chosen to enable 'Sauron' and its minions!"
         writeEcho "Processing..."
@@ -66,20 +71,40 @@ select opt in "${options[@]}"; do
         LOADER="load"
         break
         ;;
-    "Abort")
-        writeLog "[Select] - 3 --> Abort"
-        writeEcho "Bye!"
-        writeLog "[Session] - End"
-        writeLog "-------------------"
-        exit
-        break
-        ;;
-    "Clean logfiles")
-        writeLog "[Select] - 4 --> Clean logfiles"        
+    "Clean the logs")
+        writeLog "[Select] - 3 --> Clean the logs"
         writeEcho "Removing the evidence..."
         deleteLogfiles;
         writeEcho "Done!"
         writeEcho "Bye!"
+        exit;
+        break
+        ;;
+    "Remove the config")
+        writeLog "[Select] - 4 --> Remove the config"
+        writeEcho "Starting Sauron's eye to prevent trouble (back to the original state)..."
+        ACTION="enable"
+        LOADER="load"
+        writeEcho "Removing the configuration"
+        RESET_CONFIG="true"
+        writeEcho "Done!"
+        writeEcho "Bye!"
+        break
+        ;;
+    "Create lifesaver")
+        writeLog "[Select] - 5 --> Create lifesaver"
+        writeEcho "Securing your original configuration in case of the unexpected"
+        createBackupfiles;
+        writeEcho "Done!"
+        writeEcho "Bye!"
+        exit
+        break
+        ;;
+    "Exit")
+        writeLog "[Select] - 6 --> Exit"
+        writeEcho "Bye!"
+        writeLog "[Session] - End"
+        writeLog "-------------------"
         exit
         break
         ;;
@@ -95,38 +120,38 @@ done
 theExecution() {
     writeLog "[exec] - Start --> The execution"
 
-    arrayAgentsfromBackup=()
-    arrayDeamonsfromBackup=()
+    arrayAgentsfromConfig=()
+    arrayDeamonsfromConfig=()
     COUNTER=0
 
-    # get Agents from backup file
+    # get Agents from config file
     while IFS= read -r line; do
         if [[ $COUNTER > 0 ]]; then
-            arrayAgentsfromBackup+=("$line");
+            arrayAgentsfromConfig+=("$line");
         fi
         let COUNTER++
-    done <$PLIST_AGENT_BACKUP
+    done <$PLIST_AGENT_CONF
     
-    writeLog "[exec] - Array check --> Plist Agent Array from backup file --> size: ${#arrayAgentsfromBackup[@]}"
+    writeLog "[exec] - Array check --> Plist Agent Array from config file --> size: ${#arrayAgentsfromConfig[@]}"
 
     # reset counter
     COUNTER=0
-    # get Deamons from backup file
+    # get Deamons from config file
     while IFS= read -r line; do
         if [[ $COUNTER > 0 ]]; then
-            arrayDeamonsfromBackup+=("$line");
+            arrayDeamonsfromConfig+=("$line");
         fi
         let COUNTER++
-    done <$PLIST_DEAMON_BACKUP
+    done <$PLIST_DEAMON_CONF
     
-    writeLog "[exec] - Array check --> Plist Deamons Array from backup file --> size: ${#arrayDeamonsfromBackup[@]}"
+    writeLog "[exec] - Array check --> Plist Deamons Array from config file --> size: ${#arrayDeamonsfromConfig[@]}"
 
     # enable
     if [[ $ACTION == "enable" ]]; then
         writeLog "[exec] - $ACTION"
 
         writeLog "[exec] - Start --> $ACTION Deamons"
-        for e in ${arrayDeamonsfromBackup[@]}; do
+        for e in ${arrayDeamonsfromConfig[@]}; do
             # Check if deamons are already running
             # Get path
             dirname="${e%/*}"
@@ -155,7 +180,7 @@ theExecution() {
         writeLog "[exec] - Resolved --> $ACTION Deamons"
 
         writeLog "[exec] - Start --> $ACTION Agents"
-        for d in ${arrayAgentsfromBackup[@]}; do
+        for d in ${arrayAgentsfromConfig[@]}; do
             # Check if agents are already running
             # Get path
             dirname="${d%/*}"
@@ -189,14 +214,14 @@ theExecution() {
         writeLog "[exec] - Disable"
 
         writeLog "[exec] - Start --> $ACTION Deamons"
-        for g in ${arrayDeamonsfromBackup[@]}; do
+        for g in ${arrayDeamonsfromConfig[@]}; do
             writeLog "[exec] --> $ACTION --> $g"
             /bin/launchctl $LOADER -w $g
         done
         writeLog "[exec] - Resolved --> $ACTION Deamons"
 
         writeLog "[exec] - Start --> $ACTION Agents"
-        for h in ${arrayAgentsfromBackup[@]}; do
+        for h in ${arrayAgentsfromConfig[@]}; do
             writeLog "[exec] --> $ACTION --> $h"
             su - $SUDO_USER -c "/bin/launchctl $LOADER -w $h"
         done
@@ -212,6 +237,12 @@ theExecution() {
 #------------------------#
 theExecution;
 
+if [[ $RESET_CONFIG == "true" ]]; then
+    
+    writeLog "[Reset Conf] - Start --> Removing the configuration"
+    removeConfigfiles;
+    writeLog "[Reset Conf] - Resolved --> Removing the configuration"
+fi
 
 
 #------------------------#
