@@ -1,5 +1,11 @@
 # Stop Sauron
 
+** :red_circle: `<important notification>` :red_circle: ** 
+
+If you're currently using a version from before 14-01-2023, please enable stop-sauron first before updating to the latest version. There is a breaking change in the way enable/disable are handled.
+
+** :red_circle: `<important notification/>` :red_circle: ** 
+
 To stop the all seeing eye of Sauron and make your MacBook operate as it should be.
 
 This bash script has been created to harmless disable/enable software being pushed to your MacBooks by a Mobile Device Management (MDM) system.
