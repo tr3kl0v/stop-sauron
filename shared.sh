@@ -132,3 +132,26 @@ removeConfigfiles() {
 
     
 }
+
+#------------------------#
+# Remove configuration
+#------------------------#
+getFileName() {
+
+    var1=$1
+
+    # Get path
+    dirnaam="${var1%/*}"
+
+    # Get last folder
+    basenaam="${dirnaam##*/}"
+
+    # Strip path from filename
+    filenaam="$(basenaam -- $var1)"
+    
+    # Get filename without extension
+    filenaam="${filenaam%.*}"
+
+    echo $filenaam
+
+}

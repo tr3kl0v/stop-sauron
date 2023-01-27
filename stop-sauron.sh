@@ -153,6 +153,10 @@ theExecution() {
         writeLog "[exec] - Start --> $ACTION Deamons"
         for e in ${arrayDeamonsfromConfig[@]}; do
             # Check if deamons are already running
+
+            # Get filename
+            getFileName $e
+
             # Get path
             dirname="${e%/*}"
 
