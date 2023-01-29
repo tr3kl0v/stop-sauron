@@ -18,10 +18,15 @@
 #------------------------#
 debugFlag='false'
 
-while getopts 'x' flag; do
+while getopts 'xo:' flag; do
     case "${flag}" in
         x) 
             debugFlag='true' ;;
+        o)
+            if [[ $OPTARG > 0 && $OPTARG < 3 ]]; then
+                selectedOption="$(($OPTARG-1))"
+            fi
+            ;;
         *) 
             printGetOptsMenuUsage
         exit 1 ;;
@@ -53,64 +58,67 @@ echo ""
 PS3='Please enter your choice: '
 options=("Stop Sauron's eye" "Start Sauron's eye" "Clean the logs" "Remove the config" "Create lifesaver" "Exit")
 COLUMNS=20
-select opt in "${options[@]}"; do
-    case $opt in
-    "Stop Sauron's eye")
-        writeLog "[Select] - 1 --> Disable"
-        writeEcho "You have chosen to disable 'Sauron' and its minions!"
-        writeEcho "Processing..."
-        ACTION="disable"
-        LOADER="unload"
-        break
-        ;;
-    "Start Sauron's eye")
-        writeLog "[Select] - 2 --> Enable"
-        writeEcho "You have chosen to enable 'Sauron' and its minions!"
-        writeEcho "Processing..."
-        ACTION="enable"
-        LOADER="load"
-        break
-        ;;
-    "Clean the logs")
-        writeLog "[Select] - 3 --> Clean the logs"
-        writeEcho "Removing the evidence..."
-        deleteLogfiles;
-        writeEcho "Done!"
-        writeEcho "Bye!"
-        exit;
-        break
-        ;;
-    "Remove the config")
-        writeLog "[Select] - 4 --> Remove the config"
-        writeEcho "Starting Sauron's eye to prevent trouble (back to the original state)..."
-        ACTION="enable"
-        LOADER="load"
-        writeEcho "Removing the configuration"
-        RESET_CONFIG="true"
-        writeEcho "Done!"
-        writeEcho "Bye!"
-        break
-        ;;
-    "Create lifesaver")
-        writeLog "[Select] - 5 --> Create lifesaver"
-        writeEcho "Securing your original configuration in case of the unexpected"
-        createBackupfiles;
-        writeEcho "Done!"
-        writeEcho "Bye!"
-        exit
-        break
-        ;;
-    "Exit")
-        writeLog "[Select] - 6 --> Exit"
-        writeEcho "Bye!"
-        writeLog "[Session] - End"
-        writeLog "-------------------"
-        exit
-        break
-        ;;
-    *) echo "invalid option $REPLY" ;;
-    esac
-done
+
+# Check for a numeric argument to use as an option; otherwise use select menu
+[[ $selectedOption ]] && opt="${options[$selectedOption]}" || select opt in "${options[@]}"; do break; done
+
+case $opt in
+"Stop Sauron's eye")
+    writeLog "[Select] - 1 --> Disable"
+    writeEcho "You have chosen to disable 'Sauron' and its minions!"
+    writeEcho "Processing..."
+    ACTION="disable"
+    LOADER="unload"
+    break
+    ;;
+"Start Sauron's eye")
+    writeLog "[Select] - 2 --> Enable"
+    writeEcho "You have chosen to enable 'Sauron' and its minions!"
+    writeEcho "Processing..."
+    ACTION="enable"
+    LOADER="load"
+    break
+    ;;
+"Clean the logs")
+    writeLog "[Select] - 3 --> Clean the logs"
+    writeEcho "Removing the evidence..."
+    deleteLogfiles;
+    writeEcho "Done!"
+    writeEcho "Bye!"
+    exit;
+    break
+    ;;
+"Remove the config")
+    writeLog "[Select] - 4 --> Remove the config"
+    writeEcho "Starting Sauron's eye to prevent trouble (back to the original state)..."
+    ACTION="enable"
+    LOADER="load"
+    writeEcho "Removing the configuration"
+    RESET_CONFIG="true"
+    writeEcho "Done!"
+    writeEcho "Bye!"
+    break
+    ;;
+"Create lifesaver")
+    writeLog "[Select] - 5 --> Create lifesaver"
+    writeEcho "Securing your original configuration in case of the unexpected"
+    createBackupfiles;
+    writeEcho "Done!"
+    writeEcho "Bye!"
+    exit
+    break
+    ;;
+"Exit")
+    writeLog "[Select] - 6 --> Exit"
+    writeEcho "Bye!"
+    writeLog "[Session] - End"
+    writeLog "-------------------"
+    exit
+    break
+    ;;
+*) echo "invalid option $REPLY" ;;
+esac
+
 
 
 
