@@ -18,11 +18,18 @@
 #------------------------#
 debugFlag='false'
 
-while getopts 'x' flag; do
+while getopts 'hxo:' flag; do
     case "${flag}" in
+        o)
+            optionArguments=${OPTARG}
+            if [[ $optionArguments -ge 1 || $optionArguments -le 6 ]]; then
+                selectedOption="$(($optionArguments-1))"
+            fi
+            ;;
         x) 
-            debugFlag='true' ;;
-        *) 
+            debugFlag='true'
+            ;;
+        h | *) 
             printGetOptsMenuUsage
         exit 1 ;;
     esac
@@ -44,7 +51,6 @@ greeting;
 
 writeEcho "Stop Sauron's eye version: ${VERSION}"
 writeEcho "${greet} '$SUDO_USER'. What do you have in mind for today?"
-echo ""
  
 
 #------------------------#
@@ -55,7 +61,7 @@ options=("Stop Sauron's eye" "Start Sauron's eye" "Clean the logs" "Remove the c
 COLUMNS=20
 
 # Check for a numeric argument to use as an option; otherwise use select menu
-[[ $1 ]] && [ $1 -gt 0 ] && opt="${options[$1 - 1]}" || select opt in "${options[@]}"; do break; done
+[[ $selectedOption ]] && opt="${options[$selectedOption]}" || select opt in "${options[@]}"; do break; done
 
 case $opt in
 "Stop Sauron's eye")
@@ -75,6 +81,7 @@ case $opt in
     break
     ;;
 "Clean the logs")
+    writeEcho $opt
     writeLog "[Select] - 3 --> Clean the logs"
     writeEcho "Removing the evidence..."
     deleteLogfiles;

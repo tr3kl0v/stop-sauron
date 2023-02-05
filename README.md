@@ -76,6 +76,30 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 
+
+## Restoring machine state in case of emergency
+
+It could potential happen that services have changed, enabling  deamons/agents doesn't work anymore or stop-sauron is failing at all. This happend to me once after releasing version 1.1.4 of the script. 
+Hereby I want to provide you an in case of emergency recovery method. The first step is that you need to know that there are 2 configuration files generated on the first run. If you're smart you've created a lifesaver. This will mean you'll have 2 or 4 (with lifesaver) configuration files in the folder from where you run the script. There is 1 deamons and 1 agents configuration files. With lifesaver two of each.
+All configuration files have a timestamp of creation. The second step is to evaluate which configuration file is most suitable to do the recovery from. It could be the oldest, but it could also be the newest.
+Pick 1 set of the configuration files. With 1 set I mean or the conf files or the backup files. Step 3 is to run the commands below one by one for each entry in the configuration files.
+
+For enabling deamons use:
+
+```zsh
+$ sudo launchctl load -w /Library/LaunchDaemons/com.xxx.xxx.plist
+
+```
+
+For enabling agents use:
+
+```zsh
+$ launchctl load -w /Library/LaunchAgents/com.xxx.xxx.plist
+
+```
+After you're done you have restored your machine to the original state before using stop-sauron. Be careful not to wait forever with making new conf files or backups. Your security department makes changes all the time. 
+
+
 ## Future plans
 
 Adding more packages that harm your development & work velocity or personal privacy

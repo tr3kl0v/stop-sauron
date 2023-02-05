@@ -58,14 +58,13 @@ greeting() {
 #------------------------#
 printGetOptsMenuUsage() {
     
-    echo "Stop Sauron - To stop the all seeing eye of Sauron and make your MacBook operate as it should be."
+    echo "Stop Sauron [-hxop] [arguments]"
     echo " "
-    echo "Stop Sauron [options] application [arguments]"
-    echo " "
+    echo "Syntax: stop-sauron [-h|x|o|p]"
     echo "options:"
-    # echo "-h, --help                show brief help"
-    echo "-x, --debugFlag=true       enable debug logging"
-    # echo "-o, --output-dir=DIR      specify a directory to store output in"
+    echo "-h,   Print this brief help"
+    echo "-x,   Enable logging for debug purpose"
+    echo "-o,   Pass integer [1-2] to automate the script"
 
 }
 
