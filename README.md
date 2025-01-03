@@ -1,10 +1,6 @@
 # Stop Sauron
 
-:red_circle: `<important notification>`
-
-If you're currently using a version from before 14-01-2023, please enable stop-sauron first before updating to the latest version. There is a breaking change in the way enable/disable is handled.
-
-:red_circle: `<important notification />`
+:red_circle: `Last update 3 january 2025`
 
 To stop the all seeing eye of Sauron and make your MacBook operate as it should be.
 
@@ -65,14 +61,16 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | Big Sur (11.0.1 - 11.3.1) | :white_check_mark: |
 |  | Monterey (12.0 - 12.6) | :white_check_mark: |
 |  | Ventura (13.0 - 13.1) | :white_check_mark: |
-| WorkSpace 1 | (20.10.0 - 22.01.0 | :white_check_mark: |
+|  | Sonoma (14.0 - 14.7.2) | :white_check_mark: |
+|  | Sequoia (15.0 -15.2) | :white_check_mark: |
+| WorkSpace 1 | 20.10.0 - 24.07.2 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee Endpoint Security for Mac | 10.7.8 (186) | :small_red_triangle_down: |
 | McAfee Threat Prevention | 10.7.8 (128) | :white_check_mark: |
 | McAfee Firewall | 10.7.8 (115) | :white_check_mark: |
-| Zscaler | 2.1.2.38 | :white_check_mark: |
+| Zscaler | 2.1.2.38 - 4.3.0.237 | :white_check_mark: |
 | Cylance | 2.1.1594.518 - 3.0.1000.511 | :white_check_mark: |
-| Crowdstrike Falcon | ? - ? | :heavy_check_mark:|
+| Crowdstrike Falcon | :x: | :heavy_check_mark:|
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 
