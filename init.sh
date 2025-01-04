@@ -4,7 +4,7 @@
 # Search for deamons, plists and Installtion file on current systems
 #------------------------#
 prepare() {
-
+ 
     # set default variables
     LogfileExists="false"
     configFileExists="false"
@@ -41,7 +41,7 @@ createLogFile() {
         writeLog "-------------------"
         writeLog "[Log file] - Logfile located"
     else        
-        writeEcho "[Log file] - I couldn 't locate the logfile"
+        writeEcho "[Log file] - I could not locate the logfile"
         writeEcho "[Log file] - Created the logfile"
 
         #if isFolder $logLocation; then
@@ -175,7 +175,3 @@ findFiles() {
     writeLog "[Files] - Resolved --> Find Plists"
 
 }
-
-#inspectInstallationFile(){
-
-#}
