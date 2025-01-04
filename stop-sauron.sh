@@ -37,6 +37,9 @@ writeLog "[Session] - Start"
 writeLog "[User] - ID --> $SUDO_USER"
 writeLog "[User] - Mode --> $LOCAL_USER"
 
+getDeviceInformation;
+
+
 #------------------------#
 # Greetings
 #------------------------#
