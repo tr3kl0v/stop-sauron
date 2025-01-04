@@ -1,6 +1,6 @@
 # Stop Sauron
 
-:red_circle: `Last update 3 january 2025`
+:red_circle: `Last update 4 january 2025`
 
 To stop the all seeing eye of Sauron and make your MacBook operate as it should be.
 
