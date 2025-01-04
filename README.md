@@ -13,6 +13,7 @@ Unfortunate you still need to have `sudo` rights, but when that's the case you c
 4. Zscaler
 5. CylancePROTECT
 6. CrowdStrike Falcon
+7. Rabit7 agent
 
 ## Usage
 
