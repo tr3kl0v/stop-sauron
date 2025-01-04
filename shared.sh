@@ -132,3 +132,26 @@ removeConfigfiles() {
 
     
 }
+
+getDeviceInformation(){
+    
+    # get device serial number (e.g. X1X1XX1XXX)
+    serialNumber=$(ioreg -c IOPlatformExpertDevice -d 2 | awk -F\" '/IOPlatformSerialNumber/{print $4}')
+    serialNumber=$(echo $serialNumber | tr -d '\n')
+
+    #softwareVersionOutput=$(sw_vers)
+    #formattedOutput=$(echo "$softwareVersionOutput" | tr -s '	')
+    productName=$(sw_vers -productName)
+    productVersion=$(sw_vers -productVersion)
+    buildVersion=$(sw_vers -buildVersion)
+
+    # get product type (e.g. Macbook18.1)
+    productType=$(sysctl hw.model | awk -F ' ' '{print $2}')
+    productType=$(echo $productType | tr -d '\n')
+
+    writeLog "[Device] - SerialNumber --> $serialNumber"
+    writeLog "[Device] - ProductType: --> $productType"
+    writeLog "[Device] - ProductName: --> $productName"
+    writeLog "[Device] - ProductVersion: --> $productVersion"
+    writeLog "[Device] - BuildVersion: --> $buildVersion"
+}

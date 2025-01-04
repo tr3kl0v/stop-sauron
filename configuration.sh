@@ -2,7 +2,7 @@
 #------------------------#
 # Version
 #------------------------#
-VERSION="1.1.4.23.01.2023"
+VERSION="1.1.5.04.01.2025"
 
 
 #------------------------#
@@ -42,4 +42,5 @@ applicationsArray=(
     "com.zscaler"
     "com.cylance"
     "com.crowdstrike"
+    "com.rapid7"
 )
