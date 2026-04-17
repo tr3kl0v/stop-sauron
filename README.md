@@ -1,6 +1,6 @@
 # Stop Sauron
 
-:red_circle: `Last update 4 january 2025`
+:red_circle: `Last update 17 April 2026`
 
 To stop the all seeing eye of Sauron and make your MacBook operate as it should be.
 
@@ -63,7 +63,8 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 |  | Monterey (12.0 - 12.6) | :white_check_mark: |
 |  | Ventura (13.0 - 13.1) | :white_check_mark: |
 |  | Sonoma (14.0 - 14.7.2) | :white_check_mark: |
-|  | Sequoia (15.0 -15.2) | :white_check_mark: |
+|  | Sequoia (15.0 - 15.2) | :white_check_mark: |
+|  | Tahoe (26.0 - 26.4.1) | :white_check_mark: |
 | WorkSpace 1 | 20.10.0 - 24.07.2 | :white_check_mark: |
 | FireEye | 33.22.6 | :white_check_mark: |
 | McAfee Endpoint Security for Mac | 10.7.8 (186) | :small_red_triangle_down: |
