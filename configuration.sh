@@ -4,6 +4,7 @@
 #------------------------#
 VERSION="1.1.7.19.04.2026"
 LAUNCHCTL_BIN="${STOP_SAURON_LAUNCHCTL_BIN:-/bin/launchctl}"
+INSTALL_LOG_FILE="${STOP_SAURON_INSTALL_LOG:-/private/var/log/install.log}"
 
 
 #------------------------#

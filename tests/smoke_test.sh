@@ -12,6 +12,7 @@ AGENT_DIR="$PLIST_ROOT/LaunchAgents"
 DAEMON_DIR="$PLIST_ROOT/LaunchDaemons"
 LIST_FILE="$TEST_ROOT/launchctl-list.txt"
 ACTIONS_LOG="$TEST_ROOT/launchctl-actions.log"
+INSTALL_LOG="$TEST_ROOT/install.log"
 
 cleanup() {
     rm -rf "$TEST_ROOT"
@@ -109,6 +110,11 @@ cat <<EOF > "$LIST_FILE"
 456 0 com.test.daemon
 EOF
 
+cat <<EOF > "$INSTALL_LOG"
+2020-12-22 03:01:13-08 macbook-pro installd[465]: Installed "VMware Workspace ONE Intelligent Hub" ()
+2020-12-22 12:48:11+01 MacBook-Pro installd[663]: Installed "FireEye Agent" (33.22.6)
+EOF
+
 run_app() {
     local choice="$1"
 
@@ -116,6 +122,7 @@ run_app() {
         PATH="$MOCK_BIN_DIR:$PATH" \
         STOP_SAURON_TEST_EUID_OVERRIDE=0 \
         STOP_SAURON_LAUNCHCTL_BIN="$MOCK_BIN_DIR/launchctl" \
+        STOP_SAURON_INSTALL_LOG="$INSTALL_LOG" \
         STOP_SAURON_STATE_DIR="$STATE_DIR" \
         STOP_SAURON_PLIST_PATHS="$AGENT_DIR:$DAEMON_DIR" \
         STOP_SAURON_APPLICATIONS="com.test.agent:com.test.daemon" \
@@ -157,5 +164,37 @@ assert_exists "$STATE_DIR/plist-deamon.backup.conf.bak"
 run_app 1 >/dev/null
 assert_file_contains "$ACTIONS_LOG" "unload -w $DAEMON_DIR/com.test.daemon.plist"
 assert_file_contains "$ACTIONS_LOG" "unload -w $AGENT_DIR/com.test.agent.plist"
+
+DETECTION_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/stop-sauron-detect.XXXXXX")"
+DETECTION_STATE_DIR="$DETECTION_ROOT/state"
+DETECTION_PLIST_ROOT="$DETECTION_ROOT/plists"
+DETECTION_AGENT_DIR="$DETECTION_PLIST_ROOT/LaunchAgents"
+DETECTION_DAEMON_DIR="$DETECTION_PLIST_ROOT/LaunchDaemons"
+DETECTION_LIST_FILE="$DETECTION_ROOT/launchctl-list.txt"
+mkdir -p "$DETECTION_STATE_DIR" "$DETECTION_AGENT_DIR" "$DETECTION_DAEMON_DIR"
+touch "$DETECTION_AGENT_DIR/com.airwatch.helper.plist" "$DETECTION_DAEMON_DIR/com.fireeye.daemon.plist" "$DETECTION_DAEMON_DIR/com.mcafee.unexpected.plist"
+cat <<EOF > "$DETECTION_LIST_FILE"
+123 0 com.airwatch.helper
+456 0 com.fireeye.daemon
+EOF
+
+printf '6\n' | env \
+    PATH="$MOCK_BIN_DIR:$PATH" \
+    STOP_SAURON_TEST_EUID_OVERRIDE=0 \
+    STOP_SAURON_LAUNCHCTL_BIN="$MOCK_BIN_DIR/launchctl" \
+    STOP_SAURON_INSTALL_LOG="$INSTALL_LOG" \
+    STOP_SAURON_MOCK_LAUNCHCTL_LIST_FILE="$DETECTION_LIST_FILE" \
+    STOP_SAURON_STATE_DIR="$DETECTION_STATE_DIR" \
+    STOP_SAURON_PLIST_PATHS="$DETECTION_AGENT_DIR:$DETECTION_DAEMON_DIR" \
+    SUDO_USER="smoketest" \
+    "$REPO_DIR/stop-sauron" >/dev/null
+
+assert_file_contains "$DETECTION_STATE_DIR/plist-agent.backup.conf" "$DETECTION_AGENT_DIR/com.airwatch.helper.plist"
+assert_file_contains "$DETECTION_STATE_DIR/plist-deamon.backup.conf" "$DETECTION_DAEMON_DIR/com.fireeye.daemon.plist"
+if grep -Fq -- "com.mcafee.unexpected.plist" "$DETECTION_STATE_DIR/plist-deamon.backup.conf"; then
+    printf 'install.log detection should skip unsupported software absent from the log\n' >&2
+    exit 1
+fi
+rm -rf "$DETECTION_ROOT"
 
 echo "Smoke test passed."
