@@ -133,7 +133,7 @@ theExecution() {
             arrayAgentsfromConfig+=("$line");
         fi
         let COUNTER++
-    done <$PLIST_AGENT_CONF
+    done < "$PLIST_AGENT_CONF"
     
     writeLog "[exec] - Array check --> Plist Agent Array from config file --> size: ${#arrayAgentsfromConfig[@]}"
 
@@ -145,7 +145,7 @@ theExecution() {
             arrayDeamonsfromConfig+=("$line");
         fi
         let COUNTER++
-    done <$PLIST_DEAMON_CONF
+    done < "$PLIST_DEAMON_CONF"
     
     writeLog "[exec] - Array check --> Plist Deamons Array from config file --> size: ${#arrayDeamonsfromConfig[@]}"
 
@@ -154,7 +154,7 @@ theExecution() {
         writeLog "[exec] - $ACTION"
 
         writeLog "[exec] - Start --> $ACTION Deamons"
-        for e in ${arrayDeamonsfromConfig[@]}; do
+        for e in "${arrayDeamonsfromConfig[@]}"; do
             # Check if deamons are already running
             # Get path
             dirname="${e%/*}"
@@ -163,7 +163,7 @@ theExecution() {
             basename="${dirname##*/}"
 
             # Strip path from filename
-            filename="$(basename -- $e)"
+            filename="$(basename -- "$e")"
             
             # Get filename without extension
             filename="${filename%.*}"
@@ -177,13 +177,13 @@ theExecution() {
             else
                 # take action
                 writeLog "[exec] --> $ACTION --> $e"
-                /bin/launchctl $LOADER -w $e
+                /bin/launchctl "$LOADER" -w "$e"
             fi
         done
         writeLog "[exec] - Resolved --> $ACTION Deamons"
 
         writeLog "[exec] - Start --> $ACTION Agents"
-        for d in ${arrayAgentsfromConfig[@]}; do
+        for d in "${arrayAgentsfromConfig[@]}"; do
             # Check if agents are already running
             # Get path
             dirname="${d%/*}"
@@ -192,14 +192,14 @@ theExecution() {
             basename="${dirname##*/}"
 
             # Strip path from filename
-            filename="$(basename -- $d)"
+            filename="$(basename -- "$d")"
             
             # Get filename without extension
             filename="${filename%.*}"
 
             # Get agent PID
-            var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
-            PROCESS=$(echo $var1 | awk '{print $1}')
+            var1=$(su - "$SUDO_USER" -c "ps -A | /bin/launchctl list | grep -m1 -- \"$filename\"")
+            PROCESS=$(echo "$var1" | awk '{print $1}')
                 
             # Check if process is a number
             if isNumber; then
@@ -207,7 +207,7 @@ theExecution() {
             else
                 # take action
                 writeLog "[exec] --> $ACTION --> $d"
-                su - $SUDO_USER -c "/bin/launchctl $LOADER -w $d"
+                su - "$SUDO_USER" -c "/bin/launchctl \"$LOADER\" -w \"$d\""
             fi
         done
         writeLog "[exec] - Resolved --> $ACTION Agents"
@@ -217,16 +217,16 @@ theExecution() {
         writeLog "[exec] - Disable"
 
         writeLog "[exec] - Start --> $ACTION Deamons"
-        for g in ${arrayDeamonsfromConfig[@]}; do
+        for g in "${arrayDeamonsfromConfig[@]}"; do
             writeLog "[exec] --> $ACTION --> $g"
-            /bin/launchctl $LOADER -w $g
+            /bin/launchctl "$LOADER" -w "$g"
         done
         writeLog "[exec] - Resolved --> $ACTION Deamons"
 
         writeLog "[exec] - Start --> $ACTION Agents"
-        for h in ${arrayAgentsfromConfig[@]}; do
+        for h in "${arrayAgentsfromConfig[@]}"; do
             writeLog "[exec] --> $ACTION --> $h"
-            su - $SUDO_USER -c "/bin/launchctl $LOADER -w $h"
+            su - "$SUDO_USER" -c "/bin/launchctl \"$LOADER\" -w \"$h\""
         done
         writeLog "[exec] - Resolved --> $ACTION Agents"
 
