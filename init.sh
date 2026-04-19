@@ -107,13 +107,13 @@ findProcesses() {
         if [[ "$basename" == "LaunchAgents" ]]; then
             # Check the USER processes from a root viewpoint
             DEAMON_TYPE="Agent"
-            var1=$(su - "$SUDO_USER" -c "ps -A | /bin/launchctl list | grep -m1 -- \"$filename\"")
+            var1=$(su - "$SUDO_USER" -c "ps -A | \"$LAUNCHCTL_BIN\" list | grep -m1 -- \"$filename\"")
             PROCESS=$(echo "$var1" | awk '{print $1}')
             
         else
             # Get Deamon PID
             DEAMON_TYPE="Deamon"
-            PROCESS="$(ps -Ac | /bin/launchctl list | grep -m1 "$filename" | awk '{print $1}')"
+            PROCESS="$(ps -Ac | "$LAUNCHCTL_BIN" list | grep -m1 "$filename" | awk '{print $1}')"
         fi
                 
         # Check if process is a number
