@@ -18,29 +18,13 @@ That said, there are several correctness and safety issues (mostly shell robustn
 
 ## Key findings and recommendations
 
-### 1) Shebang mismatch with Bash-specific syntax (High)
-- Scripts declare `#!/bin/sh`, but use Bash constructs (`[[ ... ]]`, arrays, `select`, arithmetic patterns relying on Bash behavior).
-- On systems where `/bin/sh` is not Bash-compatible, this can fail or behave unpredictably.
-
-**Recommendation**
-- Switch shebangs to `#!/usr/bin/env bash` (or `/bin/bash` if intentionally pinned).
-- Optionally enforce strict mode (`set -euo pipefail`) after validating expected behavior.
-
-### 2) Unquoted variable expansions and command args (High)
-- Many paths and variables are used unquoted in `rm`, `cp`, `find`, and command substitutions.
-- Unquoted expansions can break on spaces/special characters and increase risk of unexpected file operations.
-
-**Recommendation**
-- Quote all path-like variables and most interpolations, e.g. `rm -- "$USER_LOG_FILE"`, `cp -- "$PLIST_AGENT_CONF" "$PLIST_AGENT_BACKUP"`.
-- Use `for x in "${array[@]}"; do ...; done` for arrays.
-
-### 3) Temporary file handling in `findFiles` (Medium)
+### 1) Temporary file handling in `findFiles` (Medium)
 - `tmpfile` is repeatedly created in working directory; this is race-prone and can conflict with concurrent runs.
 
 **Recommendation**
 - Replace with `mktemp` and `trap` cleanup, or avoid temp files entirely by using process substitution where possible.
 
-### 4) Process detection pipeline fragility (Medium)
+### 2) Process detection pipeline fragility (Medium)
 - Process checks rely on pipelines like `ps | launchctl list | grep` that may produce false positives/negatives.
 - Agent and daemon logic differ and are not centralized.
 
@@ -48,26 +32,24 @@ That said, there are several correctness and safety issues (mostly shell robustn
 - Encapsulate process detection in one function.
 - Match exact labels where possible, and avoid broad `grep` patterns.
 
-### 5) Naming and typo consistency (Low)
+### 3) Naming and typo consistency (Low)
 - Multiple `deamon` spellings appear instead of `daemon` in variables/file names.
 - Typos reduce readability and make future refactors harder.
 
 **Recommendation**
 - Normalize names gradually with compatibility shims if needed.
 
-### 6) Logging and output ergonomics (Low)
+### 4) Logging and output ergonomics (Low)
 - `writeEcho` prepends timestamps to all terminal output, which is useful for logs but can clutter user interactions.
 
 **Recommendation**
 - Keep timestamped debug logs, but use cleaner user-facing `echo` output unless timestamping is explicitly desired.
 
 ## Suggested roadmap
-1. **Hardening pass (short)**: shebang alignment + quoting + safer temp handling.
-2. **Reliability pass (short)**: centralize process detection and add deterministic matching.
-3. **Maintainability pass (medium)**: naming cleanup (`daemon`), minor refactors, and shellcheck integration in CI.
+1. **Reliability pass (short)**: centralize process detection and add deterministic matching.
+2. **Maintainability pass (medium)**: naming cleanup (`daemon`), minor refactors, and shellcheck integration in CI.
 
 ## Suggested quality gates
-- Add `shellcheck` and run it on all `.sh` files.
 - Add a minimal smoke-test script that validates:
   - config creation,
   - backup creation,
