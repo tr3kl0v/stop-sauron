@@ -37,6 +37,19 @@ isFolder() {
     [  -d "$FOLDER" ]
 }
 
+arrayContainsValue() {
+    lookupValue="$1"
+    shift
+
+    for currentValue in "$@"; do
+        if [[ "$currentValue" == "$lookupValue" ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
 
 #------------------------#
 # Greeting message

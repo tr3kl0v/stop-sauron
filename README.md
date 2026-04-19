@@ -50,6 +50,8 @@ Run the repository smoke test with:
 bash ./tests/smoke_test.sh
 ```
 
+On first discovery, Stop Sauron now also checks `/private/var/log/install.log` for supported software names and uses that to narrow the plist search before falling back to the full supported package list.
+
 
 ## Compatibility
 

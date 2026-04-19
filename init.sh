@@ -25,6 +25,62 @@ prepare() {
     writeLog "[Prepare] - Stop"
 }
 
+applicationMatchesInstallLog() {
+    applicationIdentifier="$1"
+    installLogLine="$2"
+
+    case "$applicationIdentifier" in
+        "com.airwatch")
+            [[ "$installLogLine" == *"Workspace ONE Intelligent Hub"* ]] || [[ "$installLogLine" == *"AirWatch"* ]]
+            ;;
+        "com.fireeye")
+            [[ "$installLogLine" == *"FireEye Agent"* ]]
+            ;;
+        "com.mcafee")
+            [[ "$installLogLine" == *"McAfee"* ]] || [[ "$installLogLine" == *"MFEdx-ma"* ]]
+            ;;
+        "com.zscaler")
+            [[ "$installLogLine" == *"Zscaler"* ]]
+            ;;
+        "com.cylance")
+            [[ "$installLogLine" == *"Cylance"* ]]
+            ;;
+        "com.crowdstrike")
+            [[ "$installLogLine" == *"CrowdStrike"* ]] || [[ "$installLogLine" == *"Falcon"* ]]
+            ;;
+        "com.rapid7")
+            [[ "$installLogLine" == *"Rapid7"* ]] || [[ "$installLogLine" == *"Rabit7"* ]] || [[ "$installLogLine" == *"Insight Agent"* ]]
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+resolveApplicationsToScan() {
+    detectedApplicationsArray=()
+
+    if [[ ! -f "$INSTALL_LOG_FILE" ]]; then
+        writeLog "[Install Log] - Not found --> $INSTALL_LOG_FILE"
+        return
+    fi
+
+    writeLog "[Install Log] - Start --> Detect supported software from $INSTALL_LOG_FILE"
+
+    while IFS= read -r installLogLine; do
+        for applicationIdentifier in "${applicationsArray[@]}"; do
+            if applicationMatchesInstallLog "$applicationIdentifier" "$installLogLine"; then
+                if ! arrayContainsValue "$applicationIdentifier" "${detectedApplicationsArray[@]}"; then
+                    detectedApplicationsArray+=("$applicationIdentifier")
+                    writeLog "[Install Log] - Detected --> $applicationIdentifier"
+                fi
+            fi
+        done
+    done < <(grep 'Installed' "$INSTALL_LOG_FILE")
+
+    writeLog "[Install Log] - Resolved --> detected supported packages: ${#detectedApplicationsArray[@]}"
+}
+
 createLogFile() {
 
     #logLocation="${HOME}/"
@@ -142,8 +198,18 @@ findFiles() {
     writeLog "[Files] - Start --> Find Plists"
 
     plistArray=()
+    applicationsToScan=("${applicationsArray[@]}")
 
-    for t in "${applicationsArray[@]}"; do
+    resolveApplicationsToScan;
+
+    if [[ "${#detectedApplicationsArray[@]}" -gt 0 ]]; then
+        applicationsToScan=("${detectedApplicationsArray[@]}")
+        writeLog "[Files] - Using detected applications from install.log"
+    else
+        writeLog "[Files] - Using default supported applications list"
+    fi
+
+    for t in "${applicationsToScan[@]}"; do
         
         writeLog "[Application] - Locate --> $t"
        
