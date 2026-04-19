@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #------------------------#
 # Search for deamons, plists and Installtion file on current systems
