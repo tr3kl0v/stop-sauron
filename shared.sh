@@ -5,12 +5,12 @@
 #------------------------#
 writeLog() {
      if [[ "$debugFlag" == "true" ]]; then
-        /bin/echo $(date)" - "$1 >> $USER_LOG_FILE
+        /bin/echo "$(date) - $1" >> "$USER_LOG_FILE"
     fi
 }
 
 writeEcho() {
-    /bin/echo $(date)" - "$1
+    /bin/echo "$(date) - $1"
 }
 
 #------------------------#
@@ -75,8 +75,8 @@ printGetOptsMenuUsage() {
 deleteLogfiles() {
 
     # logfile
-    if [ -f $USER_LOG_FILE ]; then
-        rm $USER_LOG_FILE
+    if [ -f "$USER_LOG_FILE" ]; then
+        rm -- "$USER_LOG_FILE"
     fi
     
 }
@@ -87,24 +87,24 @@ deleteLogfiles() {
 createBackupfiles() {
     writeLog "[Backup] - Start --> Creating backup configuration files"
 
-    if [ -f $PLIST_DEAMON_CONF ]; then
+    if [ -f "$PLIST_DEAMON_CONF" ]; then
         writeLog "[Backup] - found --> $PLIST_DEAMON_CONF"
-        if [ -f $PLIST_DEAMON_BACKUP ]; then
+        if [ -f "$PLIST_DEAMON_BACKUP" ]; then
             writeLog "[Backup] - found --> $PLIST_DEAMON_BACKUP --> skipping backup"
             writeEcho "[Backup] - found --> $PLIST_DEAMON_BACKUP --> skipping backup. Please remove this previous backup file manually"
         else
-            cp $PLIST_DEAMON_CONF $PLIST_DEAMON_BACKUP
+            cp -- "$PLIST_DEAMON_CONF" "$PLIST_DEAMON_BACKUP"
             writeLog "[Backup] - created --> $PLIST_DEAMON_BACKUP"
         fi
     fi
     
-    if [ -f $PLIST_AGENT_CONF ]; then
+    if [ -f "$PLIST_AGENT_CONF" ]; then
         writeLog "[Backup] - found --> $PLIST_AGENT_CONF"
-        if [ -f $PLIST_AGENT_BACKUP ]; then
+        if [ -f "$PLIST_AGENT_BACKUP" ]; then
             writeLog "[Backup] - found --> $PLIST_AGENT_BACKUP --> skipping backup"
             writeEcho "[Backup] - found --> $PLIST_AGENT_BACKUP --> skipping backup. Please remove this previous backup file manually"
         else
-            cp $PLIST_AGENT_CONF $PLIST_AGENT_BACKUP
+            cp -- "$PLIST_AGENT_CONF" "$PLIST_AGENT_BACKUP"
             writeLog "[Backup] - created --> $PLIST_AGENT_BACKUP"
         fi
     fi
@@ -118,15 +118,15 @@ createBackupfiles() {
 removeConfigfiles() {
 
     # Config
-    if [ -f $PLIST_DEAMON_CONF ]; then
+    if [ -f "$PLIST_DEAMON_CONF" ]; then
         writeLog "[Reset Conf] - Found --> $PLIST_DEAMON_CONF"
-        rm $PLIST_DEAMON_CONF
+        rm -- "$PLIST_DEAMON_CONF"
         writeLog "[Reset Conf] - Removed --> $PLIST_DEAMON_CONF"
     fi
     
-    if [ -f $PLIST_AGENT_CONF ]; then
+    if [ -f "$PLIST_AGENT_CONF" ]; then
         writeLog "[Reset Conf] - Found --> $PLIST_AGENT_CONF"
-        rm $PLIST_AGENT_CONF
+        rm -- "$PLIST_AGENT_CONF"
         writeLog "[Reset Conf] - Removed --> $PLIST_AGENT_CONF"
     fi
 
@@ -137,7 +137,7 @@ getDeviceInformation(){
     
     # get device serial number (e.g. X1X1XX1XXX)
     serialNumber=$(ioreg -c IOPlatformExpertDevice -d 2 | awk -F\" '/IOPlatformSerialNumber/{print $4}')
-    serialNumber=$(echo $serialNumber | tr -d '\n')
+    serialNumber=$(echo "$serialNumber" | tr -d '\n')
 
     #softwareVersionOutput=$(sw_vers)
     #formattedOutput=$(echo "$softwareVersionOutput" | tr -s '	')
@@ -147,7 +147,7 @@ getDeviceInformation(){
 
     # get product type (e.g. Macbook18.1)
     productType=$(sysctl hw.model | awk -F ' ' '{print $2}')
-    productType=$(echo $productType | tr -d '\n')
+    productType=$(echo "$productType" | tr -d '\n')
 
     writeLog "[Device] - SerialNumber --> $serialNumber"
     writeLog "[Device] - ProductType: --> $productType"

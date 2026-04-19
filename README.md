@@ -73,7 +73,7 @@ Stop Sauron supports the software packages mentioned in the table below on OSX. 
 | Zscaler | 2.1.2.38 - 4.3.0.237 | :white_check_mark: |
 | Cylance | 2.1.1594.518 - 3.0.1000.511 | :white_check_mark: |
 | Crowdstrike Falcon | ? | :x: |
-| Rabit7 | 4.0.13.32 | :question: |
+| Rabit7 | 4.0.13.32 - 4.0.19.57 | :question: |
 
 This sh script is written for GNU bash version 3.2.*, which is the current used version for OSX & MacOS and has been since the first release of OSX Lion.
 

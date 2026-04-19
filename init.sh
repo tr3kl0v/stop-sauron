@@ -36,7 +36,7 @@ createLogFile() {
 
 
     # Check if logfile exits on system
-    if [ -f $USER_LOG_FILE ]; then
+    if [ -f "$USER_LOG_FILE" ]; then
         LogfileExists="true"
         writeLog "-------------------"
         writeLog "[Log file] - Logfile located"
@@ -52,7 +52,7 @@ createLogFile() {
 
 
         # Create new logfile
-        echo  "$(date) - -------------------" > $USER_LOG_FILE
+        echo  "$(date) - -------------------" > "$USER_LOG_FILE"
         writeLog "[Logfile] -> created"
 
       #fi
@@ -65,16 +65,16 @@ createLogFile() {
 
 createConfigFiles() {
     # Check if Deamon Conf exits on system
-    if [ -f $PLIST_DEAMON_CONF ] && [ -f $PLIST_AGENT_CONF ]; then
+    if [ -f "$PLIST_DEAMON_CONF" ] && [ -f "$PLIST_AGENT_CONF" ]; then
         configFileExists="true"
         writeLog "[Config file] - Deamon- & Agent configuration files located"
     else        
         writeEcho "[Config file] - I couldn 't locate the Deamon- & Agent configuration files"
 
         # Create new empty logfiles
-        /bin/echo $(date) > $PLIST_DEAMON_CONF
+        /bin/echo "$(date)" > "$PLIST_DEAMON_CONF"
         writeLog "[Config file] - Deamon -> created"
-        /bin/echo $(date) > $PLIST_AGENT_CONF
+        /bin/echo "$(date)" > "$PLIST_AGENT_CONF"
         writeLog "[Config file] - Agent -> created"
 
         writeEcho "[Config file] - Created the Deamon- & Agent configuration files"
@@ -89,7 +89,7 @@ findProcesses() {
     processArray=()
 
     writeLog "[Plist] - find Deamon process"
-    for i in ${plistArray[@]}; do
+    for i in "${plistArray[@]}"; do
         DEAMON_TYPE=""
 
         # Get path
@@ -99,7 +99,7 @@ findProcesses() {
         basename="${dirname##*/}"
 
         # Strip path from filename
-        filename="$(basename -- $i)"
+        filename="$(basename -- "$i")"
         
         # Get filename without extension
         filename="${filename%.*}"
@@ -107,8 +107,8 @@ findProcesses() {
         if [[ "$basename" == "LaunchAgents" ]]; then
             # Check the USER processes from a root viewpoint
             DEAMON_TYPE="Agent"
-            var1=$(su - $SUDO_USER -c "ps -A | /bin/launchctl list | grep -m1 $filename")
-            PROCESS=$(echo $var1 | awk '{print $1}')
+            var1=$(su - "$SUDO_USER" -c "ps -A | /bin/launchctl list | grep -m1 -- \"$filename\"")
+            PROCESS=$(echo "$var1" | awk '{print $1}')
             
         else
             # Get Deamon PID
@@ -120,9 +120,9 @@ findProcesses() {
         if isNumber; then
             processArray+=("$PROCESS")
             if [[ "$DEAMON_TYPE" == "Agent" ]]; then 
-                /bin/echo $i >> $PLIST_AGENT_CONF
+                /bin/echo "$i" >> "$PLIST_AGENT_CONF"
             else
-                /bin/echo $i >> $PLIST_DEAMON_CONF
+                /bin/echo "$i" >> "$PLIST_DEAMON_CONF"
             fi
         else
             processArray+=("0")
@@ -143,22 +143,22 @@ findFiles() {
 
     plistArray=()
 
-    for t in ${applicationsArray[@]}; do
+    for t in "${applicationsArray[@]}"; do
         
         writeLog "[Application] - Locate --> $t"
        
         # loop through sudo- & system Launch folders
-        for v in ${plistPathArray[@]}; do
+        for v in "${plistPathArray[@]}"; do
 
             # find plist files in folder defined and add them to array
-            find $v -name "${t}*" -print0 >tmpfile
+            find "$v" -name "${t}*" -print0 > "tmpfile"
             while IFS=  read -r -d $'\0'; do
 
             plistArray+=("$REPLY")
             writeLog "[Plist] - $t --> found --> $REPLY"
                            
-            done <tmpfile
-            rm -f tmpfile
+            done < "tmpfile"
+            rm -f -- "tmpfile"
 
         done
 
