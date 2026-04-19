@@ -1,6 +1,9 @@
 #!/bin/bash
 
-[[ $EUID == 0 ]] || {
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_EUID="${STOP_SAURON_TEST_EUID_OVERRIDE:-$EUID}"
+
+[[ $ROOT_EUID == 0 ]] || {
     echo "Must be run as root."
     exit
 }
@@ -8,9 +11,9 @@
 #------------------------#
 # imports
 #------------------------#
-. configuration.sh
-. shared.sh
-. init.sh
+. "$SCRIPT_DIR/configuration.sh"
+. "$SCRIPT_DIR/shared.sh"
+. "$SCRIPT_DIR/init.sh"
 
 
 #------------------------#
@@ -198,7 +201,7 @@ theExecution() {
             filename="${filename%.*}"
 
             # Get agent PID
-            var1=$(su - "$SUDO_USER" -c "ps -A | /bin/launchctl list | grep -m1 -- \"$filename\"")
+            var1=$(su - "$SUDO_USER" -c "ps -A | \"$LAUNCHCTL_BIN\" list | grep -m1 -- \"$filename\"")
             PROCESS=$(echo "$var1" | awk '{print $1}')
                 
             # Check if process is a number
@@ -207,7 +210,7 @@ theExecution() {
             else
                 # take action
                 writeLog "[exec] --> $ACTION --> $d"
-                su - "$SUDO_USER" -c "/bin/launchctl \"$LOADER\" -w \"$d\""
+                su - "$SUDO_USER" -c "\"$LAUNCHCTL_BIN\" \"$LOADER\" -w \"$d\""
             fi
         done
         writeLog "[exec] - Resolved --> $ACTION Agents"
@@ -219,14 +222,14 @@ theExecution() {
         writeLog "[exec] - Start --> $ACTION Deamons"
         for g in "${arrayDeamonsfromConfig[@]}"; do
             writeLog "[exec] --> $ACTION --> $g"
-            /bin/launchctl "$LOADER" -w "$g"
+            "$LAUNCHCTL_BIN" "$LOADER" -w "$g"
         done
         writeLog "[exec] - Resolved --> $ACTION Deamons"
 
         writeLog "[exec] - Start --> $ACTION Agents"
         for h in "${arrayAgentsfromConfig[@]}"; do
             writeLog "[exec] --> $ACTION --> $h"
-            su - "$SUDO_USER" -c "/bin/launchctl \"$LOADER\" -w \"$h\""
+            su - "$SUDO_USER" -c "\"$LAUNCHCTL_BIN\" \"$LOADER\" -w \"$h\""
         done
         writeLog "[exec] - Resolved --> $ACTION Agents"
 

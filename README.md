@@ -1,6 +1,6 @@
 # Stop Sauron
 
-:red_circle: `Last update 17 April 2026`
+:red_circle: `Last update 19 April 2026`
 
 To stop the all seeing eye of Sauron and make your MacBook operate as it should be.
 
@@ -22,14 +22,14 @@ Use at your own risk, but know I'm continuously using it on daily basis. I dying
 Make the script executable:
 
 ```zsh
-chmod +x ./stop-sauron.sh
+chmod +x ./stop-sauron ./stop-sauron.sh
 
 ```
 
 Run stop Sauron as sudo:
 
 ```zsh
-sudo ./stop-sauron.sh
+sudo ./stop-sauron
 
 ```
 
@@ -41,6 +41,14 @@ Select you demanded action out of the options
 * Option 4: Remove the config (Removing the original configuration files, create on the first run)
 * Option 5: Create lifesaver (Creating a backupfile of the configuration files)
 * Option 6: Exit (without any actions)
+
+## Smoke test
+
+Run the repository smoke test with:
+
+```zsh
+bash ./tests/smoke_test.sh
+```
 
 
 ## Compatibility
